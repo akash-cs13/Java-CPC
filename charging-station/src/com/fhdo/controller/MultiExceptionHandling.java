@@ -1,6 +1,6 @@
 package com.fhdo.controller;
 
-import java.io.IOException
+import java.io.IOException;
 
 public class MultiExceptionHandling {
 	public void handleMultiExceptions(String[] args) {
