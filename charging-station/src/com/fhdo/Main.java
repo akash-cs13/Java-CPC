@@ -1,5 +1,8 @@
 package com.fhdo;
 
+import java.util.List;
+
+import com.fhdo.controller.CarReader;
 import com.fhdo.controller.ChargingStation;
 import com.fhdo.model.*;
 
@@ -18,9 +21,13 @@ public class Main {
 	    chargingStation.addEnergySource(windTurbine);
 	    chargingStation.addEnergySource(gridElectricity);
 	
+	    //Read from file - Resource Handling
+	    CarReader reader = new CarReader();
+	    List<Car> cars = reader.readFile("\\res\\Cars.txt");
+	    
 	    // Create cars
-	    Car car1 = new Car("Tesla", 300.0);
-	    Car car2 = new Car("Nissan Leaf", 1750.0);
+	    Car car1 = cars.get(0);
+	    Car car2 = cars.get(1);
 	
 	    // Charge cars at the charging station
 	    chargingStation.startCharging(car1, solarPanel);
