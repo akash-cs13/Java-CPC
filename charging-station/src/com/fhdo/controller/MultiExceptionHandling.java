@@ -1,13 +1,13 @@
 package com.fhdo.controller;
 
-import java.io.IOException;
-
 public class MultiExceptionHandling {
-	public void handleMultiExceptions(String[] args) {
-		try{
-			//Code 
-		} catch (ClassNotFoundException|IOException|InterruptedException|NoSuchFieldException|NoSuchMethodException|RuntimeException e) {
-			System.err.println("Exceptions occur: " + e.getMessage());
+	public static  void multiException() {
+		try {
+			int exampleArr[] = new int[2];
+			System.out.println("Value: "+ exampleArr[4]/0);
+		} catch (ArithmeticException | ArrayIndexOutOfBoundsException e) {
+			System.err.println("Exception occur:"+ e.getMessage());
 		}
-	}
+	} 
 }
+

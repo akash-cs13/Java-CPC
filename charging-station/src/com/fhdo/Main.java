@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fhdo.controller.CarReader;
 import com.fhdo.controller.ChargingStation;
+import com.fhdo.controller.MultiExceptionHandling;
 import com.fhdo.model.*;
 
 public class Main {
@@ -32,5 +33,11 @@ public class Main {
 	    // Charge cars at the charging station
 	    chargingStation.startCharging(car1, solarPanel);
 	    chargingStation.startCharging(car2, windTurbine);
+
+		//Multiple Exception Example
+
+		MultiExceptionHandling multi = new MultiExceptionHandling();
+		multi.multiException();
+
 	}
 }
