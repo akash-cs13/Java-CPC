@@ -17,17 +17,22 @@ public class ChargingStation {
 		this.energySource.add(energySource);
 	}
 
-	public void startCharging(Car car, EnergySource energySource) throws Exception {
-		try {
-			if (energySource.getAvailableEnergy() < car.getBatteryCapacity()) {
-				throw new UnvailableEnergySourceException("The availabe source of energy is not enough for charging");
-			}
-			System.out.print("Start charging on " + car.getBrand() + "\n");
-		} catch (Exception e) {
-			System.out.print("Sorry! There is a problem with ..." + car.getBrand() + "\n");
-			throw e;
-		}
-
+	public void startCharging(Car car, EnergySource energySource) throws UnvailableEnergySourceException, ChargingException {
+	    try {
+	    	
+	    	UnvailableEnergySourceException e = new UnvailableEnergySourceException ("top level"); 
+	    	e.initCause(new IOException ("IO cause"));
+	    	throw e;
+	    	
+	       /* if (energySource.getAvailableEnergy() < car.getBatteryCapacity()) {
+	            throw new UnvailableEnergySourceException("The available source of energy is not enough for charging", null);
+	        } */
+	        
+	    } catch (UnvailableEnergySourceException e) {
+	        System.out.println("Caught:  " + e);
+	        System.out.println("Original cause: " +e.getCause());
+	        throw new ChargingException("Error starting charging process", e);
+	    }
 	}
 
 }
