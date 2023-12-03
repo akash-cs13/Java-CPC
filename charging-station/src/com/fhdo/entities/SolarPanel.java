@@ -1,4 +1,4 @@
-package com.fhdo.model;
+package com.fhdo.entities;
 
 public class SolarPanel implements EnergySource {
 	private double availableEnergy;

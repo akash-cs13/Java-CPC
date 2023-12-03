@@ -1,10 +1,10 @@
-package com.fhdo.model;
+package com.fhdo.entities;
 
-public class GridElectricity implements EnergySource {
+public class WindTurbine implements EnergySource {
 	private double availableEnergy;
-
-	public GridElectricity() {
-		this.availableEnergy = 800;
+	
+	public WindTurbine() {
+		this.availableEnergy = 500;
 	}
 	
 	public double getAvailableEnergy() {
