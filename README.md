@@ -36,3 +36,5 @@ You would use the Files.isSymbolicLink method.
 
 
 Youtube Link for a+b: https://youtu.be/HWeQnS0kvxk 
+
+Link for the Youtube video Hermann A: https://youtu.be/uHVh92hpZTk
