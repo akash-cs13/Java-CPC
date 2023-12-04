@@ -31,8 +31,7 @@ You would use the Files.isSymbolicLink method.
 
 | Task | Assignee | Matrikel-Nr | Demonstration link |
 | -------- | -------- | -------- | -------- |
-a.Create multi user access to the charging station – external users who could book timeslot and be 
-part of the prioritized queue, administrators. Create metadata for your project | Nhat Quang Nguyen | 7219288 | [YouTube](https://youtu.be/HWeQnS0kvxk) |
+a.Create multi user access to the charging station external users who could book timeslot and be part of the prioritized queue, administrators. Create metadata for your project | Nhat Quang Nguyen | 7219288 | [YouTube](https://youtu.be/HWeQnS0kvxk) |
 b. Testing program simulate the system runnning in parallel, caculate waiting time and assign cars for charging | Nhat Lam Nguyen | 7219037 | [YouTube](https://youtu.be/eAxZ-5KeQrs) |
 c. Resource Management: | Akash Cuntur Shrinivasmurthy | 721964 | [YouTube](https://youtu.be/r4N748miUKs) |
 d. Chaining Exceptions| Anguiga Hermann | 7218003| https://youtu.be/1mKDkRs0pDU
