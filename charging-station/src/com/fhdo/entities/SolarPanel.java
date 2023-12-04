@@ -6,6 +6,9 @@ public class SolarPanel implements EnergySource {
 	public SolarPanel() {
 		this.availableEnergy = 1000;
 	}
+	public SolarPanel(double Energy) {
+		this.availableEnergy = Energy;
+	}
 
 	public double getAvailableEnergy() {
 		return availableEnergy;
@@ -13,5 +16,9 @@ public class SolarPanel implements EnergySource {
 	
 	public void setAvailableEnergy(double availableEnergy) {
 		this.availableEnergy = availableEnergy;
+	}
+	
+	public String getEnergyType() {
+		return "Solar Energy";
 	}
 }

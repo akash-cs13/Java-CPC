@@ -31,7 +31,8 @@ public class ChargingStationManager {
 					for (ChargingLot chargingLot : chargingLots) {
 						if (chargingLot.getisAvailable()) {
 							WaitingCar waitingCarPop = waitingList.remove(0);
-							chargingLot.chargeCar(waitingCarPop.getCar(), waitingCarPop.getEnergySource());
+							//chargingLot.chargeCar(waitingCarPop.getCar(), waitingCarPop.getEnergySource());
+							chargingLot.chargeCar(waitingCarPop.getCar(), this.energySource);
 							break;
 						}
 					}
@@ -46,12 +47,12 @@ public class ChargingStationManager {
 		thread.start();
 	}
 
-	public void addCarToChargingStation(Car car, EnergySource energySource) {
+	public void addCarToChargingStation(Car car) {
 		isAssigned = false;
 
 		for (ChargingLot chargingLot : chargingLots) {
 			if (chargingLot.getisAvailable()) {
-				chargingLot.chargeCar(car, energySource);
+				chargingLot.chargeCar(car, this.energySource);
 				this.isAssigned = true;
 				break;
 			}
@@ -60,7 +61,7 @@ public class ChargingStationManager {
 		if (!isAssigned) {
 			for (ChargingLot chargingLot : chargingLots) {
 				if (chargingLot.getremainingTime() < 15) {
-					WaitingCar waitingCar = new WaitingCar(car, energySource);
+					WaitingCar waitingCar = new WaitingCar(car);
 					waitingList.add(waitingCar);
 					System.out.println("Car " + car.getBrand() + " added to the waiting list");
 					break;

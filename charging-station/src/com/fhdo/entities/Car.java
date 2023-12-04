@@ -20,6 +20,11 @@ public class Car {
 		return batteryCapacity;
 	}
 	
+	public void setBatteryCapacity(double capacity) {
+		//Using this to partially charge the car
+		this.batteryCapacity = capacity;
+	}
+	
 	public String getBrand() {
 		return brand;
 	}
@@ -32,4 +37,5 @@ public class Car {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
 }
