@@ -10,6 +10,10 @@ import com.fhdo.entities.energy.SolarPanel;
 import com.fhdo.entities.energy.energySources;
 import com.fhdo.entities.weather.weatherType;
 
+import java.io.IOException;
+import java.util.Date;
+import java.util.logging.*;
+
 public class ChargingStationManager {
 	private List<ChargingLot> chargingLots;
 	private List<WaitingCar> waitingList;
@@ -18,6 +22,12 @@ public class ChargingStationManager {
 	private energyManager energyManager;
 	private weatherCondition weathercondition;
 	
+	/* Quang test */
+	/*
+	final Logger LOGGER = Logger.getLogger("Logger");
+	private Date date = new Date();
+	private LogFileClass logfileManager = new LogFileClass(date, "Station", LOGGER);
+	*/
 
 	public ChargingStationManager(int numLots) {
 		this.energySources = new ArrayList<>();

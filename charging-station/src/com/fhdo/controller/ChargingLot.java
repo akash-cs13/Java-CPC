@@ -25,9 +25,9 @@ public class ChargingLot {
 		Thread thread = new Thread(() -> {
 			while (car.getbatteryFullCapacity() - car.getBatteryCurrentCapacity() > 0) {
 					if (energyManager.getTotalEnergy() > 0) {
+						this.remainingChargeTime = car.getbatteryFullCapacity() - car.getBatteryCurrentCapacity();
 						energyManager.decrementTotalEnergy(10);
 						car.increaseBatteryCurrentCapacity(10);
-						this.remainingChargeTime = car.getbatteryFullCapacity() - car.getBatteryCurrentCapacity();
 						try {
 						TimeUnit.SECONDS.sleep(1); // Suppose one unit of energy needs 10 second to charge
 						} catch (InterruptedException e) {
