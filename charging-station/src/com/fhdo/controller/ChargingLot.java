@@ -4,71 +4,55 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import com.fhdo.entities.Car;
-import com.fhdo.entities.EnergySource;
+import com.fhdo.entities.cars.Car;
+import com.fhdo.entities.energy.energySources;
 import com.fhdo.errors.InsufficientEnergyException;
 
 public class ChargingLot {
 
-	//private List<EnergySource> energySource;
-
 	private int lotId;
 	private boolean isAvailable;
-	private double remainingTime;
+	private double remainingChargeTime;
 
 	public ChargingLot(int lotId) {
-		//this.energySource = new ArrayList<>();
 		this.lotId = lotId;
 		this.isAvailable = true;
-		this.remainingTime = 0;
+		this.remainingChargeTime = 0;
 	}
 
-	public void chargeCar(Car car, List<EnergySource> energySources) {
-		this.remainingTime = car.getchargingTime();
+	public void chargeCar(Car car, energyManager energyManager) {
 		this.isAvailable = false;
 		Thread thread = new Thread(() -> {
-			for(EnergySource energySource: energySources) {
-				if(this.isAvailable == false) {
-					if(car.getBatteryCapacity()<=energySource.getAvailableEnergy()) {
-						while (remainingTime > 0) {
-							remainingTime--;
-							try {
-								TimeUnit.SECONDS.sleep(1);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
+			while (car.getbatteryFullCapacity() - car.getBatteryCurrentCapacity() > 0) {
+					if (energyManager.getTotalEnergy() > 0) {
+						energyManager.decrementTotalEnergy(10);
+						car.increaseBatteryCurrentCapacity(10);
+						this.remainingChargeTime = car.getbatteryFullCapacity() - car.getBatteryCurrentCapacity();
+						try {
+						TimeUnit.SECONDS.sleep(1); // Suppose one unit of energy needs 10 second to charge
+						} catch (InterruptedException e) {
+							e.printStackTrace();
 						}
-						//Draining energy from source to charge the car
-						energySource.setAvailableEnergy(energySource.getAvailableEnergy()-car.getBatteryCapacity());
-						
-						this.isAvailable = true;
-						System.out.println("Charging Lot " + lotId + " finished charging the Car " + car.getBrand() + " with " + energySource.getEnergyType());
-					} else{
-						//Partially charge the car
-						car.setBatteryCapacity(car.getBatteryCapacity()-energySource.getAvailableEnergy());
-						//System.out.println("Charging Lot " + lotId + " partially charged the Car " + car.getBrand() + " with " + energySource.getEnergyType());
-					}
-				}
+					} else
+					{
+						// Out of energy
+						throw new InsufficientEnergyException();
+					}				
 			}
-			if(this.isAvailable == false) {
-				this.isAvailable = true;
-				//Not enough energy
-				throw new InsufficientEnergyException();
-			}
-			
+			this.isAvailable = true;
+			System.out.println("Charging Lot " + lotId + " finished charging for Car " + car.getBrand());
 		});
 		System.out.println("Car " + car.getBrand() + " assigned to Charging Lot " + lotId);
 		System.out.println("Charging Lot " + lotId + " started charging for " + car.getchargingTime() + " seconds");
 		thread.start();
-
 	}
 
 	public boolean getisAvailable() {
 		return this.isAvailable;
 	}
 
-	public double getremainingTime() {
-		return this.remainingTime;
+	public double getremainingChargeTime() {
+		return this.remainingChargeTime;
 	}
 
 	public void shutdown() {

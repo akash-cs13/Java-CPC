@@ -3,25 +3,39 @@ package com.fhdo.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
-import com.fhdo.entities.Car;
-import com.fhdo.entities.EnergySource;
-import com.fhdo.entities.WaitingCar;
+
+import com.fhdo.entities.cars.Car;
+import com.fhdo.entities.cars.WaitingCar;
+import com.fhdo.entities.energy.SolarPanel;
+import com.fhdo.entities.energy.energySources;
+import com.fhdo.entities.weather.weatherType;
 
 public class ChargingStationManager {
 	private List<ChargingLot> chargingLots;
 	private List<WaitingCar> waitingList;
-	private List<EnergySource> energySource;
+	private List<energySources> energySources;
 	private boolean isAssigned;
+	private energyManager energyManager;
+	private weatherCondition weathercondition;
+	
 
 	public ChargingStationManager(int numLots) {
-		this.energySource = new ArrayList<>();
+		this.energySources = new ArrayList<>();
 		chargingLots = new ArrayList<>();
 		this.waitingList = new ArrayList<>();
-
+		
 		for (int i = 0; i < numLots; i++) {
 			ChargingLot chargingLot = new ChargingLot(i + 1);
 			chargingLots.add(chargingLot);
 		}
+		
+		energyManager = new energyManager(this.energySources);
+		weathercondition = new weatherCondition(energyManager);
+	}
+	
+	public void ChargingStationInit() {
+		energyManager.calculateTotalEnergy();
+		weathercondition.weatherSimulation(weatherType.SUN);
 	}
 
 	public void handleWaitingList() {
@@ -31,8 +45,8 @@ public class ChargingStationManager {
 					for (ChargingLot chargingLot : chargingLots) {
 						if (chargingLot.getisAvailable()) {
 							WaitingCar waitingCarPop = waitingList.remove(0);
-							//chargingLot.chargeCar(waitingCarPop.getCar(), waitingCarPop.getEnergySource());
-							chargingLot.chargeCar(waitingCarPop.getCar(), this.energySource);
+							//chargingLot.chargeCar(waitingCarPop.getCar(), waitingCarPop.getenergySources());
+							chargingLot.chargeCar(waitingCarPop.getCar(), energyManager);
 							break;
 						}
 					}
@@ -46,21 +60,37 @@ public class ChargingStationManager {
 
 		thread.start();
 	}
+	
+	public void handleRechargingEnergy() {
+		Thread handleRechargingEnergyThread = new Thread ( ()-> {
+			while(true) {
+				if (this.weathercondition.getCurrentWeather() == weatherType.RAIN) {
+					
+				}
+			}
+			
+		});
+		
+		handleRechargingEnergyThread.start();
+	}
+	
 
 	public void addCarToChargingStation(Car car) {
 		isAssigned = false;
 
+		// Find the free charging lot
 		for (ChargingLot chargingLot : chargingLots) {
 			if (chargingLot.getisAvailable()) {
-				chargingLot.chargeCar(car, this.energySource);
+				chargingLot.chargeCar(car, energyManager);
 				this.isAssigned = true;
 				break;
 			}
 		}
-
+		
+		/* If all of the charging lots is currently used. The waiting time will be checked*/
 		if (!isAssigned) {
 			for (ChargingLot chargingLot : chargingLots) {
-				if (chargingLot.getremainingTime() < 15) {
+				if (chargingLot.getremainingChargeTime() < 15) {
 					WaitingCar waitingCar = new WaitingCar(car);
 					waitingList.add(waitingCar);
 					System.out.println("Car " + car.getBrand() + " added to the waiting list");
@@ -72,8 +102,8 @@ public class ChargingStationManager {
 		}
 	}
 
-	public void addEnergySource(EnergySource energySource) {
-		this.energySource.add(energySource);
+	public void addenergySources(energySources energySources) {
+		this.energySources.add(energySources);
 	}
 
 }

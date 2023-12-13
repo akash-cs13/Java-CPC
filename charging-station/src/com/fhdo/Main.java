@@ -2,6 +2,11 @@ package com.fhdo;
 
 import com.fhdo.controller.ChargingStationManager;
 import com.fhdo.entities.*;
+import com.fhdo.entities.cars.Car;
+import com.fhdo.entities.energy.GridElectricity;
+import com.fhdo.entities.energy.SolarPanel;
+import com.fhdo.entities.energy.WindTurbine;
+import com.fhdo.entities.energy.energySources;
 
 public class Main {
 
@@ -11,20 +16,22 @@ public class Main {
 		
 		
 		// Create energy sources
-		EnergySource solarPanel = new SolarPanel(250.0);
-		EnergySource windTurbine = new WindTurbine(200.0);
-		EnergySource gridElectricity = new GridElectricity();
+		energySources solarPanel = new SolarPanel(250.0);
+		energySources windTurbine = new WindTurbine(200.0);
+		energySources gridElectricity = new GridElectricity(800);
 
 		// Add energy sources to the charging station
-		chargingStationManager.addEnergySource(solarPanel);
-		chargingStationManager.addEnergySource(windTurbine);
-		chargingStationManager.addEnergySource(gridElectricity);
+		chargingStationManager.addenergySources(solarPanel);
+		chargingStationManager.addenergySources(windTurbine);
+		chargingStationManager.addenergySources(gridElectricity);
 
+		chargingStationManager.ChargingStationInit();
+		
 		// Create cars
-		Car car1 = new Car("Tesla", 300.0, 2);
-		Car car2 = new Car("Nissan Leaf", 250.0, 2);
-		Car car3 = new Car("Toyota1", 450.0, 6);
-		Car car4 = new Car("Toyota2", 500.0, 7);
+		Car car1 = new Car("Tesla", 30);
+		Car car2 = new Car("Nissan Leaf", 25.0);
+		Car car3 = new Car("Toyota1", 45.0);
+		Car car4 = new Car("Toyota2", 50.0);
 		
 		// Charge cars at the charging station
 		chargingStationManager.addCarToChargingStation(car1);	
@@ -34,6 +41,8 @@ public class Main {
 		
 		// Handle waiting list in a separate thread
 		chargingStationManager.handleWaitingList();
+		
+		
 
 	}
 }
