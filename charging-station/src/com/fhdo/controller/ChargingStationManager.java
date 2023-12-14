@@ -17,9 +17,9 @@ import java.util.logging.*;
 public class ChargingStationManager {
 	private List<ChargingLot> chargingLots;
 	private List<WaitingCar> waitingList;
-	private List<energySources> energySources;
+	private volatile List<energySources> energySources; //volatile is usedfull in multi threading operations - the resource is shared between the threads instead for duplicating it for each thread
 	private boolean isAssigned;
-	private energyManager energyManager;
+	private volatile energyManager energyManager;
 	private weatherCondition weathercondition;
 	
 	/* Quang test */

@@ -1,5 +1,8 @@
 package com.fhdo;
 
+import java.util.List;
+
+import com.fhdo.controller.CarReader;
 import com.fhdo.controller.ChargingStationManager;
 import com.fhdo.entities.*;
 import com.fhdo.entities.cars.Car;
@@ -16,10 +19,11 @@ public class Main {
 		ChargingStationManager chargingStationManager = new ChargingStationManager(3);
 		weatherType weathertype;
 		
+		
 		// Create energy sources
-		energySources solarPanel = new SolarPanel(250.0);
-		energySources windTurbine = new WindTurbine(200.0);
-		energySources gridElectricity = new GridElectricity(800.0);
+		energySources solarPanel = new SolarPanel(25.0);
+		energySources windTurbine = new WindTurbine(20.0);
+		energySources gridElectricity = new GridElectricity(80.0);
 
 		// Add energy sources to the charging station
 		chargingStationManager.addenergySources(solarPanel);
@@ -30,16 +34,14 @@ public class Main {
 		chargingStationManager.handleTotalEnergy();
 		
 		// Create cars
-		Car car1 = new Car("Tesla", 30);
-		Car car2 = new Car("Nissan Leaf", 25.0);
-		Car car3 = new Car("Toyota1", 45.0);
-		Car car4 = new Car("Toyota2", 10.0);
+		CarReader reader = new CarReader();
+	    List<Car> cars = reader.readFile("\\charging-station\\res\\input\\Cars.txt");
+
 		
 		// Charge cars at the charging station
-		chargingStationManager.addCarToChargingStation(car1);	
-		chargingStationManager.addCarToChargingStation(car2);
-		chargingStationManager.addCarToChargingStation(car3);
-		chargingStationManager.addCarToChargingStation(car4);
+		for (Car car : cars) {
+			chargingStationManager.addCarToChargingStation(car);
+		}
 		
 		// Handle waiting list in a separate thread
 		chargingStationManager.handleWaitingList();

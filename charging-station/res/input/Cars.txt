@@ -1,0 +1,4 @@
+TeslaS-30.0
+Nissan Leaf-25.0
+Toyota1-45.0
+Toyota2-50.0
