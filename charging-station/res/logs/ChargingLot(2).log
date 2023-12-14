@@ -1,24 +1,30 @@
-Dec 14, 2023 9:24:16 AM com.fhdo.logger.BasicLogger info
+Dec 14, 2023 9:33:32 AM com.fhdo.logger.BasicLogger info
 INFO: Car TeslaS assigned to Charging Lot 1
-Dec 14, 2023 9:24:16 AM com.fhdo.logger.BasicLogger info
+Dec 14, 2023 9:33:32 AM com.fhdo.logger.BasicLogger info
 INFO: Charging Lot 1 started charging for 2.0 seconds
-Dec 14, 2023 9:24:16 AM com.fhdo.logger.BasicLogger info
+Dec 14, 2023 9:33:32 AM com.fhdo.logger.BasicLogger info
 INFO: Car Nissan Leaf assigned to Charging Lot 2
-Dec 14, 2023 9:24:16 AM com.fhdo.logger.BasicLogger info
+Dec 14, 2023 9:33:32 AM com.fhdo.logger.BasicLogger info
 INFO: Charging Lot 2 started charging for 2.0 seconds
-Dec 14, 2023 9:24:16 AM com.fhdo.logger.BasicLogger info
+Dec 14, 2023 9:33:32 AM com.fhdo.logger.BasicLogger info
 INFO: Car Toyota1 assigned to Charging Lot 3
-Dec 14, 2023 9:24:16 AM com.fhdo.logger.BasicLogger info
+Dec 14, 2023 9:33:32 AM com.fhdo.logger.BasicLogger info
 INFO: Charging Lot 3 started charging for 6.0 seconds
-Dec 14, 2023 9:24:18 AM com.fhdo.logger.BasicLogger info
+Dec 14, 2023 9:33:34 AM com.fhdo.logger.BasicLogger info
 INFO: Charging Lot 1 finished charging the Car TeslaS with Wind Energy
-Dec 14, 2023 9:24:18 AM com.fhdo.logger.BasicLogger info
+Dec 14, 2023 9:33:34 AM com.fhdo.logger.BasicLogger info
 INFO: Charging Lot 2 finished charging the Car Nissan Leaf with Solar Energy
-Dec 14, 2023 9:24:19 AM com.fhdo.logger.BasicLogger info
+Dec 14, 2023 9:33:34 AM com.fhdo.logger.BasicLogger info
 INFO: Car Toyota2 assigned to Charging Lot 1
-Dec 14, 2023 9:24:19 AM com.fhdo.logger.BasicLogger info
+Dec 14, 2023 9:33:34 AM com.fhdo.logger.BasicLogger info
 INFO: Charging Lot 1 started charging for 7.0 seconds
-Dec 14, 2023 9:24:22 AM com.fhdo.logger.BasicLogger info
+Dec 14, 2023 9:33:35 AM com.fhdo.logger.BasicLogger info
+INFO: Car BMW assigned to Charging Lot 2
+Dec 14, 2023 9:33:35 AM com.fhdo.logger.BasicLogger info
+INFO: Charging Lot 2 started charging for 4.0 seconds
+Dec 14, 2023 9:33:38 AM com.fhdo.logger.BasicLogger info
 INFO: Charging Lot 3 finished charging the Car Toyota1 with Wind Energy
-Dec 14, 2023 9:24:26 AM com.fhdo.logger.BasicLogger info
+Dec 14, 2023 9:33:39 AM com.fhdo.logger.BasicLogger info
+INFO: Charging Lot 2 finished charging the Car BMW with Grid Energy
+Dec 14, 2023 9:33:41 AM com.fhdo.logger.BasicLogger info
 INFO: Charging Lot 1 finished charging the Car Toyota2 with Grid Energy
