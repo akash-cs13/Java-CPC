@@ -1,7 +1,18 @@
 package com.fhdo;
 
+import java.util.List;
+
+import com.fhdo.controller.CarReader;
 import com.fhdo.controller.ChargingStationManager;
-import com.fhdo.entities.*;
+import com.fhdo.metadata.ProjectMetadata;
+import com.fhdo.model.*;
+
+@ProjectMetadata(
+	projectName = "Capstone Project Team 13",
+	version = "4.0",
+	description = "Project for Compact Java Course", 
+	developer = {"Nhat Quang Nguyen", "Nhat Lam Nguyen", "Hermann Anguiga", "Akash Cuntur Shrinivasmurthy"}
+)
 
 public class Main {
 
@@ -20,11 +31,16 @@ public class Main {
 		chargingStationManager.addEnergySource(windTurbine);
 		chargingStationManager.addEnergySource(gridElectricity);
 
+		//Read from file - Resource Handling
+		CarReader reader = new CarReader();
+		// try : \\res\\inputs\\Cars.txt or \\charging-station\\res\\inupts\\Cars.txt
+	    List<Car> cars = reader.readFile("\\charging-station\\res\\inupts\\Cars.txt");
+
 		// Create cars
-		Car car1 = new Car("Tesla", 300.0, 2);
-		Car car2 = new Car("Nissan Leaf", 250.0, 2);
-		Car car3 = new Car("Toyota1", 450.0, 6);
-		Car car4 = new Car("Toyota2", 500.0, 7);
+		Car car1 = cars.get(0);
+		Car car2 = cars.get(1);
+		Car car3 = cars.get(2);
+		Car car4 = cars.get(3);
 		
 		// Charge cars at the charging station
 		chargingStationManager.addCarToChargingStation(car1);	

@@ -3,9 +3,10 @@ package com.fhdo.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
-import com.fhdo.entities.Car;
-import com.fhdo.entities.EnergySource;
-import com.fhdo.entities.WaitingCar;
+
+import com.fhdo.model.Car;
+import com.fhdo.model.EnergySource;
+import com.fhdo.model.WaitingCar;
 
 public class ChargingStationManager {
 	private List<ChargingLot> chargingLots;
@@ -38,7 +39,7 @@ public class ChargingStationManager {
 					}
 					TimeUnit.SECONDS.sleep(1);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
 			}

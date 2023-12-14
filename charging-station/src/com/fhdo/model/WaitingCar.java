@@ -1,4 +1,4 @@
-package com.fhdo.entities;
+package com.fhdo.model;
 
 public class WaitingCar {
     private Car car;

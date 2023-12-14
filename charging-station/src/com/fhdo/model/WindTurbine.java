@@ -1,4 +1,4 @@
-package com.fhdo.entities;
+package com.fhdo.model;
 
 public class WindTurbine implements EnergySource {
 	private double availableEnergy;

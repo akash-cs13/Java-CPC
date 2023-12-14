@@ -1,4 +1,4 @@
-package com.fhdo.entities;
+package com.fhdo.model;
 
 public interface EnergySource {
 	double getAvailableEnergy();

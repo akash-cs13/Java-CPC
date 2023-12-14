@@ -1,4 +1,4 @@
-package com.fhdo.entities;
+package com.fhdo.model;
 
 public class Car {
 	private String brand;
@@ -34,7 +34,7 @@ public class Car {
 	}
 
 	public int getRemainingTime() {
-		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 
