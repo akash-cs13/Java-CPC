@@ -26,7 +26,7 @@ public class energyManager {
 	public void calculateTotalEnergy() {
 		for (energySources energysource : this.energySources) {
 			this.totalEnergy += energysource.getAvailableEnergy();
-			System.out.println("totalEnergy " + totalEnergy + "\n");
+//			System.out.println("totalEnergy " + totalEnergy + "\n");
 		}
 	}
 

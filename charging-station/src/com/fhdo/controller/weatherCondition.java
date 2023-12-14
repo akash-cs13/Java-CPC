@@ -26,9 +26,10 @@ public class weatherCondition {
 				// Simulate the weather condition
 				switch (weather) {
 				case RAIN:
+					System.out.print("weatherType.RAIN \n");
 					energymanager.disableSourceEnergy(energyType.SOLAR_PANEL);
 					try {
-						TimeUnit.SECONDS.sleep(30); // Check weather condition each 30 seconds just for debugging
+						TimeUnit.SECONDS.sleep(50); // Check weather condition each 30 seconds just for debugging
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -36,7 +37,7 @@ public class weatherCondition {
 				case SUN:
 					System.out.print("weatherType.SUN \n");
 					try {
-						TimeUnit.SECONDS.sleep(30); // Check weather condition each 30 seconds just for debugging
+						TimeUnit.SECONDS.sleep(50); // Check weather condition each 30 seconds just for debugging
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
