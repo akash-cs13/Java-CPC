@@ -1,3 +1,6 @@
+/* NO NEED TO USE THIS. 
+ * This is just some testing. */
+
 package com.fhdo.controller;
 
 import java.io.IOException;
@@ -63,6 +66,9 @@ public class LogFileClass {
 		} catch (IOException e) {
 			this.LOGGER.log(Level.WARNING, "Exception::", e);
 		}
-
+		
+		LOGGER.info("This is an informational message");
+        LOGGER.warning("This is a warning message");
+        LOGGER.severe("This is a severe error message");
 	}
 }

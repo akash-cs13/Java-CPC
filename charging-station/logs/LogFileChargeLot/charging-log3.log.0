@@ -1,0 +1,30 @@
+Dec 14, 2023 11:07:24 PM com.fhdo.controller.ChargingLot chargeCar
+INFORMATION: Car Tesla assigned to Charging Lot 1
+Dec 14, 2023 11:07:24 PM com.fhdo.controller.ChargingLot chargeCar
+INFORMATION: Charging Lot 1 started charging for 0.0 seconds
+Dec 14, 2023 11:07:24 PM com.fhdo.controller.ChargingLot chargeCar
+INFORMATION: Car Nissan Leaf assigned to Charging Lot 2
+Dec 14, 2023 11:07:24 PM com.fhdo.controller.ChargingLot chargeCar
+INFORMATION: Charging Lot 2 started charging for 0.0 seconds
+Dec 14, 2023 11:07:24 PM com.fhdo.controller.ChargingLot chargeCar
+INFORMATION: Car Toyota1 assigned to Charging Lot 3
+Dec 14, 2023 11:07:24 PM com.fhdo.controller.ChargingLot chargeCar
+INFORMATION: Charging Lot 3 started charging for 0.0 seconds
+Dec 14, 2023 11:07:26 PM com.fhdo.controller.ChargingLot lambda$0
+INFORMATION: Charging Lot 1 finished charging for Car Teslawith license: DAX195
+Dec 14, 2023 11:07:26 PM com.fhdo.controller.ChargingLot lambda$0
+INFORMATION: Charging Lot 2 finished charging for Car Nissan Leafwith license: DAG206
+Dec 14, 2023 11:07:26 PM com.fhdo.controller.ChargingLot chargeCar
+INFORMATION: Car Toyota2 assigned to Charging Lot 1
+Dec 14, 2023 11:07:26 PM com.fhdo.controller.ChargingLot chargeCar
+INFORMATION: Charging Lot 1 started charging for 0.0 seconds
+Dec 14, 2023 11:07:28 PM com.fhdo.controller.ChargingLot lambda$0
+INFORMATION: Charging Lot 3 finished charging for Car Toyota1with license: DA0908
+Dec 14, 2023 11:07:30 PM com.fhdo.controller.ChargingLot lambda$0
+INFORMATION: Charging Lot 1 finished charging for Car Toyota2with license: DA3322
+Dec 14, 2023 11:55:41 PM com.fhdo.controller.ChargingLot lambda$0
+INFO: Charging Lot 1 finished charging for Car Tesla with license: DAX195 in 10.0
+Dec 14, 2023 11:55:41 PM com.fhdo.controller.ChargingLot lambda$0
+INFO: Charging Lot 2 finished charging for Car Nissan Leaf with license: DAG206 in 5.0
+Dec 14, 2023 11:55:43 PM com.fhdo.controller.ChargingLot lambda$0
+INFO: Charging Lot 3 finished charging for Car Toyota1 with license: DA0908 in 5.0

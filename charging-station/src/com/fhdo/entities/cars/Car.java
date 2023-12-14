@@ -6,12 +6,22 @@ public class Car {
 	private String brand;
 	private double batteryFullCapacity;
 	private double batteryCurrentCapacity;
+	private String id; 
 	
 
-	public Car(String brand, double batteryFullCapacity) {
+	public Car(String brand, double batteryFullCapacity, String id ) {
 		this.brand = brand;
 		this.batteryFullCapacity = batteryFullCapacity;
 		this.batteryCurrentCapacity = 10;
+		this.id = id;
+	}
+	
+	public String getId() {
+		return this.id;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 	public double getbatteryFullCapacity() {

@@ -36,7 +36,6 @@ public class Main {
 		// Create cars
 		CarReader reader = new CarReader();
 	    List<Car> cars = reader.readFile("\\charging-station\\res\\input\\Cars.txt");
-
 		
 		// Charge cars at the charging station
 		for (Car car : cars) {

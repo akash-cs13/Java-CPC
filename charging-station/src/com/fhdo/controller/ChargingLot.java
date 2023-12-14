@@ -1,8 +1,11 @@
 package com.fhdo.controller;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.FileHandler;
+import java.util.logging.SimpleFormatter;
 
 import com.fhdo.entities.cars.Car;
 import com.fhdo.errors.InsufficientEnergyException;
@@ -23,7 +26,12 @@ public class ChargingLot {
 		String cwd = System.getProperty("user.dir");
 		this.logger = new BasicLogger(ChargingLot.class, cwd+"\\charging-station\\res\\logs\\ChargingStation\\ChargingLot("+this.lotId+").log");
 	}
-
+	
+	public int getID() {
+		return this.lotId;
+	}
+	
+	
 	public void chargeCar(Car car, energyManager energyManager) {
 		//System.out.println("Car " + car.getBrand() + " assigned to Charging Lot " + lotId);
 		logger.info("Car " + car.getBrand() + " assigned to Charging Lot " + lotId);
@@ -45,6 +53,7 @@ public class ChargingLot {
 						TimeUnit.SECONDS.sleep(1); // Suppose 10 unit of energy needs 1 second to charge
 						} catch (InterruptedException e) {
 							e.printStackTrace();
+
 						}
 						//System.out.println("Charging Lot " + lotId + " will be fininished in " + this.remainingChargeTime + " seconds");
 						logger.info("Charging Lot " + lotId + " will be fininished in " + this.remainingChargeTime + " seconds");
@@ -57,7 +66,7 @@ public class ChargingLot {
 			}
 			this.isAvailable = true;
 			//System.out.println("Charging Lot " + lotId + " finished charging for Car " + car.getBrand());
-			logger.info("Charging Lot " + lotId + " finished charging for Car " + car.getBrand());
+			logger.info("Charging Lot " + lotId + " finished charging for Car " + car.getBrand() + " with license: " + car.getId() + " in " + Double.toString(this.remainingChargeTime));
 			});
 			thread.start();
 
