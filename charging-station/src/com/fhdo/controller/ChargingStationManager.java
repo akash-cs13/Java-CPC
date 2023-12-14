@@ -73,9 +73,15 @@ public class ChargingStationManager {
 		weathercondition = new weatherCondition(energyManager);
 	}
 	
-	public void ChargingStationInit() {
-		energyManager.calculateTotalEnergy();
-		weathercondition.weatherSimulation(weatherType.SUN);
+	public void weatherSimulation(weatherType weathertype) {
+		weathercondition.weatherSimulation(weathertype);
+	}
+	
+	public void handleTotalEnergy() {
+		Thread handleTotalEnergyThread = new Thread(() -> {
+			energyManager.calculateTotalEnergy();
+		});
+		handleTotalEnergyThread.start();
 	}
 
 	public void handleWaitingList() {
@@ -141,8 +147,12 @@ public class ChargingStationManager {
 				}
 				// TBD -> will be implemented when we use multiple stations
 				System.out.println("Car " + car.getBrand()+ " with ID: " + car.getId() + " need to go another station.");
-				this.LOGGER.info("Car " + car.getBrand()+ " with ID: " + car.getId() + " added to the waiting list");
+				this.LOGGER.info("Car " + car.getBrand()+ " with ID: " + car.getId() + " need to go another station.");
 			}
+		}
+		if (!isAssigned) {
+			// TBD -> will be implemented when we use multiple stations
+			System.out.println("Car " + car.getBrand() + " need to go another station.");
 		}
 	}
 

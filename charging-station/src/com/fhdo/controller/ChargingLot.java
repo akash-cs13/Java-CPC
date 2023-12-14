@@ -42,28 +42,30 @@ public class ChargingLot {
 			this.LOGGER.addHandler(chargingLotFileHandler);
 			chargingLotFileHandler.setFormatter(new SimpleFormatter());
 			chargingLotFileHandler.setLevel(Level.ALL);
-			
-
+	
 			// Log files for each energy source
 			
 		} catch (IOException e) {
 			this.LOGGER.log(Level.WARNING, "Exception::", e);
 		}
 	}
+	
 	public void chargeCar(Car car, energyManager energyManager) {
 		this.isAvailable = false;
 		Thread thread = new Thread(() -> {
 			while (car.getbatteryFullCapacity() - car.getBatteryCurrentCapacity() > 0) {
 					if (energyManager.getTotalEnergy() > 0) {
 						this.remainingChargeTime = car.getbatteryFullCapacity() - car.getBatteryCurrentCapacity();
+						/* The corresponding energy is transfered from station capacity to car */
 						energyManager.decrementTotalEnergy(10);
 						car.increaseBatteryCurrentCapacity(10);
 						try {
-						TimeUnit.SECONDS.sleep(1); // Suppose one unit of energy needs 10 second to charge
+						TimeUnit.SECONDS.sleep(1); // Suppose 10 unit of energy needs 1 second to charge
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 							this.LOGGER.warning(e.getMessage());
 						}
+						System.out.println("Charging Lot " + lotId + " will be fininished in " + this.remainingChargeTime + " seconds");
 					} else
 					{
 						// Out of energy
@@ -75,9 +77,7 @@ public class ChargingLot {
 			this.LOGGER.info("Charging Lot " + lotId + " finished charging for Car " + car.getBrand() + " with license: " + car.getId() + " in " + Double.toString(this.remainingChargeTime));
 		});
 		System.out.println("Car " + car.getBrand() + " assigned to Charging Lot " + lotId);
-		this.LOGGER.info("Car " + car.getBrand() + " assigned to Charging Lot " + lotId);
-		System.out.println("Charging Lot " + lotId + " started charging for " + car.getchargingTime() + " seconds");
-		this.LOGGER.info("Charging Lot " + lotId + " started charging for " + car.getchargingTime() + " seconds");
+		System.out.println("Charging Lot " + lotId + " started charging");
 		thread.start();
 	}
 

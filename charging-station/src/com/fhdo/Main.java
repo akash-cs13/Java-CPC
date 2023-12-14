@@ -7,25 +7,27 @@ import com.fhdo.entities.energy.GridElectricity;
 import com.fhdo.entities.energy.SolarPanel;
 import com.fhdo.entities.energy.WindTurbine;
 import com.fhdo.entities.energy.energySources;
+import com.fhdo.entities.weather.weatherType;
 
 public class Main {
 
 	public static void main(String[] args) throws Exception {
 
 		ChargingStationManager chargingStationManager = new ChargingStationManager(3);
-		
+		weatherType weathertype;
 		
 		// Create energy sources
 		energySources solarPanel = new SolarPanel(250.0);
 		energySources windTurbine = new WindTurbine(200.0);
-		energySources gridElectricity = new GridElectricity(800);
+		energySources gridElectricity = new GridElectricity(800.0);
 
 		// Add energy sources to the charging station
 		chargingStationManager.addenergySources(solarPanel);
 		chargingStationManager.addenergySources(windTurbine);
 		chargingStationManager.addenergySources(gridElectricity);
 
-		chargingStationManager.ChargingStationInit();
+		chargingStationManager.weatherSimulation(weatherType.SUN);
+		chargingStationManager.handleTotalEnergy();
 		
 		// Create cars
 		Car car1 = new Car("Tesla", 30, "DAX195");

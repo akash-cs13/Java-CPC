@@ -4,7 +4,6 @@ import com.fhdo.entities.energy.energySources;
 
 public class Car {
 	private String brand;
-	private double chargingTime;  // in minutes
 	private double batteryFullCapacity;
 	private double batteryCurrentCapacity;
 	private String id; 
@@ -24,11 +23,6 @@ public class Car {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
-	public double getchargingTime() {
-		return chargingTime;
-	}
-	
 	
 	public double getbatteryFullCapacity() {
 		return batteryFullCapacity;
