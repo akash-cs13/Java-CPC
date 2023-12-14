@@ -28,10 +28,10 @@ public class Main {
 		chargingStationManager.ChargingStationInit();
 		
 		// Create cars
-		Car car1 = new Car("Tesla", 30);
-		Car car2 = new Car("Nissan Leaf", 25.0);
-		Car car3 = new Car("Toyota1", 45.0);
-		Car car4 = new Car("Toyota2", 50.0);
+		Car car1 = new Car("Tesla", 30, "DAX195");
+		Car car2 = new Car("Nissan Leaf", 25.0, "DAG206");
+		Car car3 = new Car("Toyota1", 45.0, "DA0908");
+		Car car4 = new Car("Toyota2", 50.0, "DA3322");
 		
 		// Charge cars at the charging station
 		chargingStationManager.addCarToChargingStation(car1);	

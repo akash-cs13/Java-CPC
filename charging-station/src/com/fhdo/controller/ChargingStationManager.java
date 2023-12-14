@@ -1,18 +1,20 @@
 package com.fhdo.controller;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import com.fhdo.entities.cars.Car;
 import com.fhdo.entities.cars.WaitingCar;
-import com.fhdo.entities.energy.SolarPanel;
 import com.fhdo.entities.energy.energySources;
 import com.fhdo.entities.weather.weatherType;
-
-import java.io.IOException;
-import java.util.Date;
-import java.util.logging.*;
 
 public class ChargingStationManager {
 	private List<ChargingLot> chargingLots;
@@ -21,14 +23,41 @@ public class ChargingStationManager {
 	private boolean isAssigned;
 	private energyManager energyManager;
 	private weatherCondition weathercondition;
+	private Date date;
 	
 	/* Quang test */
-	/*
-	final Logger LOGGER = Logger.getLogger("Logger");
-	private Date date = new Date();
-	private LogFileClass logfileManager = new LogFileClass(date, "Station", LOGGER);
-	*/
+	
+	private Logger LOGGER = Logger.getLogger("Logger_Station");
+	private FileHandler chargingStationFileHandler;
+	private String logFolderPath = "logs/LogFileStation/";
+	
+	
+	public void InitLogger() {
 
+		try {
+			int fileSizeLimit = 10 * 1024 * 1024; // 10 MB
+			int fileCount = 5;
+
+			// Log files for each day
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+			String formattedDate = dateFormat.format(date);
+			chargingStationFileHandler = new FileHandler(logFolderPath + "charging-station"+ formattedDate +".log", fileSizeLimit, fileCount, true);
+			this.LOGGER.addHandler(chargingStationFileHandler);
+			chargingStationFileHandler.setFormatter(new SimpleFormatter());
+			chargingStationFileHandler.setLevel(Level.ALL);
+			
+
+			// Log files for each energy source
+			
+		} catch (IOException e) {
+			this.LOGGER.log(Level.WARNING, "Exception::", e);
+		}
+		
+		LOGGER.info("This is an informational message");
+        LOGGER.warning("This is a warning message");
+        LOGGER.severe("This is a severe error message");
+	}
+	
 	public ChargingStationManager(int numLots) {
 		this.energySources = new ArrayList<>();
 		chargingLots = new ArrayList<>();
@@ -37,6 +66,7 @@ public class ChargingStationManager {
 		for (int i = 0; i < numLots; i++) {
 			ChargingLot chargingLot = new ChargingLot(i + 1);
 			chargingLots.add(chargingLot);
+			chargingLot.InitLogger();
 		}
 		
 		energyManager = new energyManager(this.energySources);
@@ -64,6 +94,7 @@ public class ChargingStationManager {
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					this.LOGGER.info(e.getMessage());
 				}
 			}
 		});
@@ -93,6 +124,7 @@ public class ChargingStationManager {
 			if (chargingLot.getisAvailable()) {
 				chargingLot.chargeCar(car, energyManager);
 				this.isAssigned = true;
+				this.LOGGER.info("Car:  " + " with ID: " + car.getId() + " charge in lot: " + chargingLot.getID());
 				break;
 			}
 		}
@@ -103,11 +135,13 @@ public class ChargingStationManager {
 				if (chargingLot.getremainingChargeTime() < 15) {
 					WaitingCar waitingCar = new WaitingCar(car);
 					waitingList.add(waitingCar);
-					System.out.println("Car " + car.getBrand() + " added to the waiting list");
+					System.out.println("Car " + car.getBrand()+ " with ID: " + car.getId() + " added to the waiting list");
+					this.LOGGER.info("Car " + car.getBrand() + " with ID: " + car.getId() + " added to the waiting list");
 					break;
 				}
 				// TBD -> will be implemented when we use multiple stations
-				System.out.println("Car " + car.getBrand() + " need to go another station.");
+				System.out.println("Car " + car.getBrand()+ " with ID: " + car.getId() + " need to go another station.");
+				this.LOGGER.info("Car " + car.getBrand()+ " with ID: " + car.getId() + " added to the waiting list");
 			}
 		}
 	}
