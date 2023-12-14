@@ -66,7 +66,7 @@ public class ChargingStationManager {
 		for (int i = 0; i < numLots; i++) {
 			ChargingLot chargingLot = new ChargingLot(i + 1);
 			chargingLots.add(chargingLot);
-			chargingLot.InitLogger();
+
 		}
 		
 		energyManager = new energyManager(this.energySources);

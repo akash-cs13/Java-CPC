@@ -23,7 +23,7 @@ public class CarReader {
 			String line;
 			while((line = br.readLine()) != null) {
 				String[] words = line.split("-");
-				Car car = new Car(words[0],Double.parseDouble(words[1]));
+				Car car = new Car(words[0],Double.parseDouble(words[1]),words[2]);
 				cars.add(car);
 			}
 			
