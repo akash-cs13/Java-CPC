@@ -2,6 +2,7 @@ package com.fhdo.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -15,8 +16,6 @@ public class ChargingLot {
 	private int lotId;
 	private boolean isAvailable;
 	private double remainingChargeTime;
-	private Logger LOGGER = Logger.getLogger("Logger_ChargeLot");
-	private FileHandler chargingLotFileHandler;
 	private String logFolderPath = "logs/LogFileChargeLot/";
 	
 	
@@ -29,29 +28,18 @@ public class ChargingLot {
 	public int getID() {
 		return this.lotId;
 	}
-	
-	public void InitLogger() {
-
-		try {
-			int fileSizeLimit = 10 * 1024 * 1024; // 10 MB
-			int fileCount = 5;
-
-			// Log files for each day
-			
-			chargingLotFileHandler = new FileHandler(logFolderPath+"charging-log" + Integer.toString(this.lotId)+".log", fileSizeLimit, fileCount, true);
-			this.LOGGER.addHandler(chargingLotFileHandler);
-			chargingLotFileHandler.setFormatter(new SimpleFormatter());
-			chargingLotFileHandler.setLevel(Level.ALL);
-	
-			// Log files for each energy source
-			
-		} catch (IOException e) {
-			this.LOGGER.log(Level.WARNING, "Exception::", e);
-		}
-	}
-	
 	public void chargeCar(Car car, energyManager energyManager) {
 		this.isAvailable = false;
+		Logger LOGGER = Logger.getLogger(ChargingLot.class.getName()+Integer.toString(lotId));
+		try {
+			int fileSizeLimit = 10 * 1024 * 1024; // 10 MB
+			int fileCount = 5;	
+			FileHandler chargingLotFileHandler = new FileHandler(logFolderPath+"charging-log" + Integer.toString(this.lotId)+".log", fileSizeLimit, fileCount, true);
+			LOGGER.addHandler(chargingLotFileHandler);
+			chargingLotFileHandler.setFormatter(new SimpleFormatter());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		Thread thread = new Thread(() -> {
 			while (car.getbatteryFullCapacity() - car.getBatteryCurrentCapacity() > 0) {
 					if (energyManager.getTotalEnergy() > 0) {
@@ -63,9 +51,12 @@ public class ChargingLot {
 						TimeUnit.SECONDS.sleep(1); // Suppose 10 unit of energy needs 1 second to charge
 						} catch (InterruptedException e) {
 							e.printStackTrace();
-							this.LOGGER.warning(e.getMessage());
+							LOGGER.warning(e.getMessage());
 						}
 						System.out.println("Charging Lot " + lotId + " will be fininished in " + this.remainingChargeTime + " seconds");
+							LOGGER.info("Charging Lot " + lotId + " will be fininished in " + this.remainingChargeTime + " seconds");
+						
+						
 					} else
 					{
 						// Out of energy
@@ -74,8 +65,11 @@ public class ChargingLot {
 			}
 			this.isAvailable = true;
 			System.out.println("Charging Lot " + lotId + " finished charging for Car " + car.getBrand() + " with license: " + car.getId() + " in " + Double.toString(this.remainingChargeTime));
-			this.LOGGER.info("Charging Lot " + lotId + " finished charging for Car " + car.getBrand() + " with license: " + car.getId() + " in " + Double.toString(this.remainingChargeTime));
+			LOGGER.info("Charging Lot " + lotId + " finished charging for Car " + car.getBrand() + " with license: " + car.getId() + " in " + Double.toString(this.remainingChargeTime));
 		});
+		LOGGER.info("Car " + car.getBrand() + " assigned to Charging Lot " + lotId);
+		LOGGER.info("Charging Lot " + lotId + " started charging");
+		
 		System.out.println("Car " + car.getBrand() + " assigned to Charging Lot " + lotId);
 		System.out.println("Charging Lot " + lotId + " started charging");
 		thread.start();
@@ -91,6 +85,16 @@ public class ChargingLot {
 
 	public void shutdown() {
 		System.out.println("Charging Lot " + lotId + " shutting down");
-		this.LOGGER.info("Charging Lot " + lotId + " shutting down");
+		Logger LOGGER = Logger.getLogger(ChargingLot.class.getName()+Integer.toString(lotId));
+		try {
+			int fileSizeLimit = 10 * 1024 * 1024; // 10 MB
+			int fileCount = 5;	
+			FileHandler chargingLotFileHandler = new FileHandler(logFolderPath+"charging-log" + Integer.toString(this.lotId)+".log", fileSizeLimit, fileCount, true);
+			LOGGER.addHandler(chargingLotFileHandler);
+			chargingLotFileHandler.setFormatter(new SimpleFormatter());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		LOGGER.info("Charging Lot " + lotId + " shutting down");
 	}
 }
