@@ -14,74 +14,36 @@ import java.util.logging.SimpleFormatter;
 import com.fhdo.entities.cars.Car;
 import com.fhdo.entities.cars.WaitingCar;
 import com.fhdo.entities.energy.energySources;
+import com.fhdo.entities.users.User;
 import com.fhdo.entities.weather.weatherType;
 
 public class ChargingStationManager {
 	private List<ChargingLot> chargingLots;
 	private List<WaitingCar> waitingList;
-	private volatile List<energySources> energySources; //volatile is usedfull in multi threading operations - the resource is shared between the threads instead for duplicating it for each thread
+	private volatile List<energySources> energySources; 
 	private boolean isAssigned;
 	private volatile energyManager energyManager;
 	private weatherCondition weathercondition;
 	private Date date;
-	
-	/* Quang test */
-	
+	private LogFileManager logFileManager;
+
 	private Logger LOGGER = Logger.getLogger("Logger_Station");
 	private FileHandler chargingStationFileHandler;
 	private String logFolderPath = "logs/LogFileStation/";
-	
-	
-	public void InitLogger() {
 
-		try {
-			int fileSizeLimit = 10 * 1024 * 1024; // 10 MB
-			int fileCount = 5;
-
-			// Log files for each day
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-			String formattedDate = dateFormat.format(date);
-			chargingStationFileHandler = new FileHandler(logFolderPath + "charging-station"+ formattedDate +".log", fileSizeLimit, fileCount, true);
-			this.LOGGER.addHandler(chargingStationFileHandler);
-			chargingStationFileHandler.setFormatter(new SimpleFormatter());
-			chargingStationFileHandler.setLevel(Level.ALL);
-			
-
-			// Log files for each energy source
-			
-		} catch (IOException e) {
-			this.LOGGER.log(Level.WARNING, "Exception::", e);
-		}
-		
-		LOGGER.info("This is an informational message");
-        LOGGER.warning("This is a warning message");
-        LOGGER.severe("This is a severe error message");
-	}
-	
 	public ChargingStationManager(int numLots, String day) {
 		this.energySources = new ArrayList<>();
 		chargingLots = new ArrayList<>();
 		this.waitingList = new ArrayList<>();
-		
+
 		for (int i = 0; i < numLots; i++) {
-			ChargingLot chargingLot = new ChargingLot(i + 1,day);
+			ChargingLot chargingLot = new ChargingLot(i + 1, day);
 			chargingLots.add(chargingLot);
-			//chargingLot.InitLogger();
 		}
-		
-		energyManager = new energyManager(this.energySources);
-		weathercondition = new weatherCondition(energyManager);
-	}
-	
-	public void weatherSimulation(weatherType weathertype) {
-		weathercondition.weatherSimulation(weathertype);
-	}
-	
-	public void handleTotalEnergy() {
-		Thread handleTotalEnergyThread = new Thread(() -> {
-			energyManager.calculateTotalEnergy();
-		});
-		handleTotalEnergyThread.start();
+
+		this.energyManager = new energyManager(this.energySources);
+		this.weathercondition = new weatherCondition(energyManager);
+		this.logFileManager = new LogFileManager("res/logs/" + day + "/");
 	}
 
 	public void handleWaitingList() {
@@ -91,7 +53,8 @@ public class ChargingStationManager {
 					for (ChargingLot chargingLot : chargingLots) {
 						if (chargingLot.getisAvailable()) {
 							WaitingCar waitingCarPop = waitingList.remove(0);
-							//chargingLot.chargeCar(waitingCarPop.getCar(), waitingCarPop.getenergySources());
+							// chargingLot.chargeCar(waitingCarPop.getCar(),
+							// waitingCarPop.getenergySources());
 							chargingLot.chargeCar(waitingCarPop.getCar(), energyManager);
 							break;
 						}
@@ -107,7 +70,6 @@ public class ChargingStationManager {
 
 		thread.start();
 	}
-	
 
 	public void addCarToChargingStation(Car car) {
 		isAssigned = false;
@@ -121,32 +83,93 @@ public class ChargingStationManager {
 				break;
 			}
 		}
-		
-		/* If all of the charging lots is currently used. The waiting time will be checked*/
+
+		/*
+		 * If all of the charging lots is currently used. The waiting time will be
+		 * checked
+		 */
 		if (!isAssigned) {
 			for (ChargingLot chargingLot : chargingLots) {
 				if (chargingLot.getremainingChargeTime() < 15) {
 					WaitingCar waitingCar = new WaitingCar(car);
 					waitingList.add(waitingCar);
-					System.out.println("Car " + car.getBrand()+ " with ID: " + car.getId() + " added to the waiting list");
-					this.LOGGER.info("Car " + car.getBrand() + " with ID: " + car.getId() + " added to the waiting list");
+					System.out.println(
+							"Car " + car.getBrand() + " with ID: " + car.getId() + " added to the waiting list");
+					this.LOGGER
+							.info("Car " + car.getBrand() + " with ID: " + car.getId() + " added to the waiting list");
+					isAssigned = true;
 					break;
 				}
-				// TBD -> will be implemented when we use multiple stations
-				System.out.println("Car " + car.getBrand()+ " with ID: " + car.getId() + " need to go another station.");
-				this.LOGGER.info("Car " + car.getBrand()+ " with ID: " + car.getId() + " need to go another station.");
+
 			}
 		}
 		if (!isAssigned) {
 			// TBD -> will be implemented when we use multiple stations
-			System.out.println("Car " + car.getBrand() + " need to go another station.");
-			this.LOGGER.info("Car " + car.getBrand() + " need to go another station.");
+			System.out.println("Car " + car.getBrand() + " with ID: " + car.getId() + " need to go another station.");
+			this.LOGGER.info("Car " + car.getBrand() + " with ID: " + car.getId() + " need to go another station.");
 
 		}
 	}
 
+	
+	public void getLogFileForUsersByLotID(User user, LogFileManager logFileManager, int lotID) {
+		List<String> matchingFilesByLotID;
+		matchingFilesByLotID = logFileManager.getLogFilesByEquipment(user, "ChargingLot_" + lotID);
+		System.out.println("Open Log File by Lot ID: ");
+		for (String matchingFile : matchingFilesByLotID) {
+			System.out.println("Open the file in: " + matchingFile);
+		}
+	}
+
+	public void getLogFileForUsersByDate(User user, LogFileManager logFileManager, int day) {
+		List<String> matchingFilesByDate;
+
+		matchingFilesByDate = logFileManager.getLogFilesByDate(user, "Day_" + day);
+		System.out.println("Open Log File by Date number:");
+		for (String matchingFile : matchingFilesByDate) {
+			System.out.println("Open the file in: " + matchingFile);
+		}
+	}
+	
+	public void weatherSimulation(weatherType weathertype) {
+		weathercondition.weatherSimulation(weathertype);
+	}
+	
 	public void addenergySources(energySources energySources) {
 		this.energySources.add(energySources);
 	}
 
+	public void handleTotalEnergy() {
+		Thread handleTotalEnergyThread = new Thread(() -> {
+			energyManager.calculateTotalEnergy();
+		});
+		handleTotalEnergyThread.start();
+	}
+	
+	public void InitLogger() {
+
+		try {
+			int fileSizeLimit = 10 * 1024 * 1024; // 10 MB
+			int fileCount = 5;
+
+			// Log files for each day
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+			String formattedDate = dateFormat.format(date);
+			chargingStationFileHandler = new FileHandler(logFolderPath + "charging-station" + formattedDate + ".log",
+					fileSizeLimit, fileCount, true);
+			this.LOGGER.addHandler(chargingStationFileHandler);
+			chargingStationFileHandler.setFormatter(new SimpleFormatter());
+			chargingStationFileHandler.setLevel(Level.ALL);
+
+			// Log files for each energy source
+
+		} catch (IOException e) {
+			this.LOGGER.log(Level.WARNING, "Exception::", e);
+		}
+
+		LOGGER.info("This is an informational message");
+		LOGGER.warning("This is a warning message");
+		LOGGER.severe("This is a severe error message");
+	}
+	
 }

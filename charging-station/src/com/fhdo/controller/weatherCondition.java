@@ -22,34 +22,34 @@ public class weatherCondition {
 
 	public void weatherSimulation(weatherType weather) {
 		Thread weatherSimulatedThread = new Thread(() -> {
-			while (true) {
-				// Simulate the weather condition
-				switch (weather) {
-				case RAIN:
-					System.out.print("weatherType.RAIN \n");
-					energymanager.disableSourceEnergy(energyType.SOLAR_PANEL);
-					try {
-						TimeUnit.SECONDS.sleep(50); // Check weather condition each 30 seconds just for debugging
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					break;
-				case SUN:
-					System.out.print("weatherType.SUN \n");
-					try {
-						TimeUnit.SECONDS.sleep(50); // Check weather condition each 30 seconds just for debugging
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					energymanager.enableSourceEnergy(energyType.SOLAR_PANEL);
-					break;
-				default:
-					energymanager.enableSourceEnergy(energyType.SOLAR_PANEL);
-					energymanager.enableSourceEnergy(energyType.GRID_ELECTRICITY);
-					energymanager.enableSourceEnergy(energyType.WIND_TURBINE);
+			
+			// Simulate the weather condition
+			switch (weather) {
+			case RAIN:
+				System.out.print("weatherType.RAIN \n");
+				energymanager.disableSourceEnergy(energyType.SOLAR_PANEL);
+				try {
+					TimeUnit.SECONDS.sleep(50); // Check weather condition each 30 seconds just for debugging
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
-
+				break;
+			case SUN:
+				System.out.print("weatherType.SUN \n");
+				try {
+					TimeUnit.SECONDS.sleep(50); // Check weather condition each 30 seconds just for debugging
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				energymanager.enableSourceEnergy(energyType.SOLAR_PANEL);
+				break;
+			default:
+				energymanager.enableSourceEnergy(energyType.SOLAR_PANEL);
+				energymanager.enableSourceEnergy(energyType.GRID_ELECTRICITY);
+				energymanager.enableSourceEnergy(energyType.WIND_TURBINE);
 			}
+
+			
 		});
 		weatherSimulatedThread.start();
 	}

@@ -1,4 +1,4 @@
 TeslaS-30.0-DAX195
 Nissan Leaf-25.0-DAG206
-Toyota1-45.0-DA0908
-Toyota2-50.0-DA3322
+Toyota1-20.0-DA0908
+Toyota2-30.0-DA3322

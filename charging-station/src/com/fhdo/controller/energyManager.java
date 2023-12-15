@@ -24,41 +24,7 @@ public class energyManager {
 	energyManager(List<energySources> energySources) {
 		this.energySources = energySources;
 	}
-	
-	
-	public void InitLogger() {
 
-		try {
-			int fileSizeLimit = 10 * 1024 * 1024; // 10 MB
-			int fileCount = 5;
-
-			// Log files for each day
-			
-			chargingEnergyFileHandler = new FileHandler(logFolderPath+"energy-log.log", fileSizeLimit, fileCount, true);
-			this.LOGGER.addHandler(chargingEnergyFileHandler);
-			chargingEnergyFileHandler.setFormatter(new SimpleFormatter());
-			chargingEnergyFileHandler.setLevel(Level.ALL);
-			
-
-			// Log files for each energy source
-			
-		} catch (IOException e) {
-			this.LOGGER.log(Level.WARNING, "Exception::", e);
-		}
-		
-		while(true) {
-			try {
-			this.LOGGER.info("Energy Amount: " + Double.toString(this.totalEnergy));
-			TimeUnit.SECONDS.sleep(1);
-			}catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				this.LOGGER.info(e.getMessage());
-			}
-		}	
-	}
-	
-	
 	public double getTotalEnergy() {
 		return this.totalEnergy;
 	}

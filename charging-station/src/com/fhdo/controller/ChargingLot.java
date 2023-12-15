@@ -19,23 +19,25 @@ public class ChargingLot {
 	private int lotId;
 	private boolean isAvailable;
 	private double remainingChargeTime;
-	private String logFolderPath = "charging-station\\res\\logs\\";
+	private String logFolderPath;
+	private String day;
 	
 	
 	public ChargingLot(int lotId, String day) {
 		this.lotId = lotId;
 		this.isAvailable = true;
 		this.remainingChargeTime = 0;
-		this.logFolderPath = "charging-station\\res\\logs\\"+day+"\\chargingstation\\";
+		this.day = day;
+		this.logFolderPath = "res/logs/day_"+day+"/";
 		createDirectory(this.logFolderPath);
 
 	}
 	
 	private static void createDirectory(String directoryPath) {
 		Path path = Paths.get(directoryPath);
-	
+		
 		// Create the directory if it doesn't exist
-		if (!Files.exists(path)) {
+		if (Files.notExists(path)) {
 			try {
 				Files.createDirectories(path);
 			} catch (IOException e) {
@@ -47,9 +49,10 @@ public class ChargingLot {
 	public int getID() {
 		return this.lotId;
 	}
+	
 	public void chargeCar(Car car, energyManager energyManager) {
 		this.isAvailable = false;
-		Logger LOGGER = Logger.getLogger(ChargingLot.class.getName()+Integer.toString(lotId));
+		Logger LOGGER = Logger.getLogger(ChargingLot.class.getName() + Integer.toString(lotId));
 		System.out.println("Car " + car.getBrand() + " assigned to Charging Lot " + lotId);
 		LOGGER.info("Car " + car.getBrand() + " assigned to Charging Lot " + lotId);
 
@@ -59,12 +62,13 @@ public class ChargingLot {
 		try {
 			int fileSizeLimit = 10 * 1024 * 1024; // 10 MB
 			int fileCount = 5;	
-			FileHandler chargingLotFileHandler = new FileHandler(logFolderPath+"ChargingLot(" + Integer.toString(this.lotId)+").log", fileSizeLimit, fileCount, true);
+			FileHandler chargingLotFileHandler = new FileHandler(logFolderPath + "Day_" + day + "ChargingLot_" + Integer.toString(this.lotId)+".log", fileSizeLimit, fileCount, true);
 			LOGGER.addHandler(chargingLotFileHandler);
 			chargingLotFileHandler.setFormatter(new SimpleFormatter());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 		Thread thread = new Thread(() -> {
 			while (car.getbatteryFullCapacity() - car.getBatteryCurrentCapacity() > 0) {
 					if (energyManager.getTotalEnergy() > 0) {
@@ -103,18 +107,4 @@ public class ChargingLot {
 		return this.remainingChargeTime;
 	}
 
-	public void shutdown() {
-		System.out.println("Charging Lot " + lotId + " shutting down");
-		Logger LOGGER = Logger.getLogger(ChargingLot.class.getName()+Integer.toString(lotId));
-		try {
-			int fileSizeLimit = 10 * 1024 * 1024; // 10 MB
-			int fileCount = 5;	
-			FileHandler chargingLotFileHandler = new FileHandler(logFolderPath+"ChargingLot(" + Integer.toString(this.lotId)+").log", fileSizeLimit, fileCount, true);
-			LOGGER.addHandler(chargingLotFileHandler);
-			chargingLotFileHandler.setFormatter(new SimpleFormatter());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		LOGGER.info("Charging Lot " + lotId + " shutting down");
-	}
 }

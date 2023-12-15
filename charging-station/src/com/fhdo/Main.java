@@ -1,15 +1,19 @@
 package com.fhdo;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import com.fhdo.controller.CarReader;
 import com.fhdo.controller.ChargingStationManager;
+import com.fhdo.controller.LogFileManager;
+import com.fhdo.controller.UserManager;
 import com.fhdo.entities.*;
 import com.fhdo.entities.cars.Car;
 import com.fhdo.entities.energy.GridElectricity;
 import com.fhdo.entities.energy.SolarPanel;
 import com.fhdo.entities.energy.WindTurbine;
 import com.fhdo.entities.energy.energySources;
+import com.fhdo.entities.users.User;
 import com.fhdo.entities.weather.weatherType;
 import com.fhdo.metadata.ProjectMetadata;
 
@@ -23,8 +27,9 @@ import com.fhdo.metadata.ProjectMetadata;
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-
-		ChargingStationManager chargingStationManager = new ChargingStationManager(3, "day01");
+		
+		ChargingStationManager chargingStationManager = new ChargingStationManager(3, "1");
+		LogFileManager logFileManager = new LogFileManager("res/logs/day_1/");
 		
 		// Create energy sources
 		energySources solarPanel = new SolarPanel(250.0);
@@ -41,7 +46,7 @@ public class Main {
 		
 		// Create cars
 		CarReader reader = new CarReader();
-	    List<Car> cars = reader.readFile("\\charging-station\\res\\input\\Cars.txt");
+	    List<Car> cars = reader.readFile("\\res\\input\\Cars.txt");
 		
 		// Charge cars at the charging station
 		for (Car car : cars) {
@@ -52,6 +57,12 @@ public class Main {
 		chargingStationManager.handleWaitingList();
 		
 		
-
+		// User Management - Will be integrated when implement the capstone project
+		User user1 = new User("name", 123, "username", "123a", "Admin");
+		UserManager user = new UserManager();
+		user.addUser(user1);
+		
+		chargingStationManager.getLogFileForUsersByDate(user1, logFileManager, 1);
+		chargingStationManager.getLogFileForUsersByLotID(user1, logFileManager, 2);
 	}
 }
