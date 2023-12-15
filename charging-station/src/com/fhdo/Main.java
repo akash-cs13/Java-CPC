@@ -1,5 +1,8 @@
 package com.fhdo;
 
+import java.util.List;
+
+import com.fhdo.controller.CarReader;
 import com.fhdo.controller.ChargingStationManager;
 import com.fhdo.entities.*;
 import com.fhdo.entities.cars.Car;
@@ -8,13 +11,20 @@ import com.fhdo.entities.energy.SolarPanel;
 import com.fhdo.entities.energy.WindTurbine;
 import com.fhdo.entities.energy.energySources;
 import com.fhdo.entities.weather.weatherType;
+import com.fhdo.metadata.ProjectMetadata;
+
+@ProjectMetadata(
+	projectName = "Capstone Project Team 13",
+	version = "4.0",
+	description = "Project for Compact Java Course", 
+	developer = {"Nhat Quang Nguyen", "Nhat Lam Nguyen", "Hermann Anguiga", "Akash Cuntur Shrinivasmurthy"}
+)
 
 public class Main {
 
 	public static void main(String[] args) throws Exception {
 
-		ChargingStationManager chargingStationManager = new ChargingStationManager(3);
-		weatherType weathertype;
+		ChargingStationManager chargingStationManager = new ChargingStationManager(3, "day01");
 		
 		// Create energy sources
 		energySources solarPanel = new SolarPanel(250.0);
@@ -30,16 +40,13 @@ public class Main {
 		chargingStationManager.handleTotalEnergy();
 		
 		// Create cars
-		Car car1 = new Car("Tesla", 30, "DAX195");
-		Car car2 = new Car("Nissan Leaf", 25.0, "DAG206");
-		Car car3 = new Car("Toyota1", 45.0, "DA0908");
-		Car car4 = new Car("Toyota2", 50.0, "DA3322");
+		CarReader reader = new CarReader();
+	    List<Car> cars = reader.readFile("\\charging-station\\res\\input\\Cars.txt");
 		
 		// Charge cars at the charging station
-		chargingStationManager.addCarToChargingStation(car1);	
-		chargingStationManager.addCarToChargingStation(car2);
-		chargingStationManager.addCarToChargingStation(car3);
-		chargingStationManager.addCarToChargingStation(car4);
+		for (Car car : cars) {
+			chargingStationManager.addCarToChargingStation(car);
+		}
 		
 		// Handle waiting list in a separate thread
 		chargingStationManager.handleWaitingList();

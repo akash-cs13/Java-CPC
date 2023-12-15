@@ -19,9 +19,9 @@ import com.fhdo.entities.weather.weatherType;
 public class ChargingStationManager {
 	private List<ChargingLot> chargingLots;
 	private List<WaitingCar> waitingList;
-	private List<energySources> energySources;
+	private volatile List<energySources> energySources; //volatile is usedfull in multi threading operations - the resource is shared between the threads instead for duplicating it for each thread
 	private boolean isAssigned;
-	private energyManager energyManager;
+	private volatile energyManager energyManager;
 	private weatherCondition weathercondition;
 	private Date date;
 	
@@ -58,13 +58,13 @@ public class ChargingStationManager {
         LOGGER.severe("This is a severe error message");
 	}
 	
-	public ChargingStationManager(int numLots) {
+	public ChargingStationManager(int numLots, String day) {
 		this.energySources = new ArrayList<>();
 		chargingLots = new ArrayList<>();
 		this.waitingList = new ArrayList<>();
 		
 		for (int i = 0; i < numLots; i++) {
-			ChargingLot chargingLot = new ChargingLot(i + 1);
+			ChargingLot chargingLot = new ChargingLot(i + 1,day);
 			chargingLots.add(chargingLot);
 			//chargingLot.InitLogger();
 		}
@@ -100,25 +100,12 @@ public class ChargingStationManager {
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-					this.LOGGER.info(e.getMessage());
+					this.LOGGER.warning(e.getMessage());
 				}
 			}
 		});
 
 		thread.start();
-	}
-	
-	public void handleRechargingEnergy() {
-		Thread handleRechargingEnergyThread = new Thread ( ()-> {
-			while(true) {
-				if (this.weathercondition.getCurrentWeather() == weatherType.RAIN) {
-					
-				}
-			}
-			
-		});
-		
-		handleRechargingEnergyThread.start();
 	}
 	
 
@@ -130,7 +117,7 @@ public class ChargingStationManager {
 			if (chargingLot.getisAvailable()) {
 				chargingLot.chargeCar(car, energyManager);
 				this.isAssigned = true;
-				this.LOGGER.info("Car:  " + " with ID: " + car.getId() + " charge in lot: " + chargingLot.getID());
+				this.LOGGER.info("Car with ID: " + car.getId() + " charge in lot: " + chargingLot.getID());
 				break;
 			}
 		}
@@ -153,6 +140,8 @@ public class ChargingStationManager {
 		if (!isAssigned) {
 			// TBD -> will be implemented when we use multiple stations
 			System.out.println("Car " + car.getBrand() + " need to go another station.");
+			this.LOGGER.info("Car " + car.getBrand() + " need to go another station.");
+
 		}
 	}
 

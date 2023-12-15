@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import com.fhdo.entities.cars.Car;
 import com.fhdo.entities.energy.energySources;
@@ -16,25 +19,47 @@ public class ChargingLot {
 	private int lotId;
 	private boolean isAvailable;
 	private double remainingChargeTime;
-	private String logFolderPath = "logs/LogFileChargeLot/";
+	private String logFolderPath = "charging-station\\res\\logs\\";
 	
 	
-	public ChargingLot(int lotId) {
+	public ChargingLot(int lotId, String day) {
 		this.lotId = lotId;
 		this.isAvailable = true;
 		this.remainingChargeTime = 0;
+		this.logFolderPath = "charging-station\\res\\logs\\"+day+"\\chargingstation\\";
+		createDirectory(this.logFolderPath);
+
 	}
 	
+	private static void createDirectory(String directoryPath) {
+		Path path = Paths.get(directoryPath);
+	
+		// Create the directory if it doesn't exist
+		if (!Files.exists(path)) {
+			try {
+				Files.createDirectories(path);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public int getID() {
 		return this.lotId;
 	}
 	public void chargeCar(Car car, energyManager energyManager) {
 		this.isAvailable = false;
 		Logger LOGGER = Logger.getLogger(ChargingLot.class.getName()+Integer.toString(lotId));
+		System.out.println("Car " + car.getBrand() + " assigned to Charging Lot " + lotId);
+		LOGGER.info("Car " + car.getBrand() + " assigned to Charging Lot " + lotId);
+
+		System.out.println("Charging Lot " + lotId + " started charging");
+		LOGGER.info("Charging Lot " + lotId + " started charging");
+		
 		try {
 			int fileSizeLimit = 10 * 1024 * 1024; // 10 MB
 			int fileCount = 5;	
-			FileHandler chargingLotFileHandler = new FileHandler(logFolderPath+"charging-log" + Integer.toString(this.lotId)+".log", fileSizeLimit, fileCount, true);
+			FileHandler chargingLotFileHandler = new FileHandler(logFolderPath+"ChargingLot(" + Integer.toString(this.lotId)+").log", fileSizeLimit, fileCount, true);
 			LOGGER.addHandler(chargingLotFileHandler);
 			chargingLotFileHandler.setFormatter(new SimpleFormatter());
 		} catch (IOException e) {
@@ -67,11 +92,6 @@ public class ChargingLot {
 			System.out.println("Charging Lot " + lotId + " finished charging for Car " + car.getBrand() + " with license: " + car.getId() + " in " + Double.toString(this.remainingChargeTime));
 			LOGGER.info("Charging Lot " + lotId + " finished charging for Car " + car.getBrand() + " with license: " + car.getId() + " in " + Double.toString(this.remainingChargeTime));
 		});
-		LOGGER.info("Car " + car.getBrand() + " assigned to Charging Lot " + lotId);
-		LOGGER.info("Charging Lot " + lotId + " started charging");
-		
-		System.out.println("Car " + car.getBrand() + " assigned to Charging Lot " + lotId);
-		System.out.println("Charging Lot " + lotId + " started charging");
 		thread.start();
 	}
 
@@ -89,7 +109,7 @@ public class ChargingLot {
 		try {
 			int fileSizeLimit = 10 * 1024 * 1024; // 10 MB
 			int fileCount = 5;	
-			FileHandler chargingLotFileHandler = new FileHandler(logFolderPath+"charging-log" + Integer.toString(this.lotId)+".log", fileSizeLimit, fileCount, true);
+			FileHandler chargingLotFileHandler = new FileHandler(logFolderPath+"ChargingLot(" + Integer.toString(this.lotId)+").log", fileSizeLimit, fileCount, true);
 			LOGGER.addHandler(chargingLotFileHandler);
 			chargingLotFileHandler.setFormatter(new SimpleFormatter());
 		} catch (IOException e) {
