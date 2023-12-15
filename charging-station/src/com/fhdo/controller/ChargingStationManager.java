@@ -25,6 +25,7 @@ public class ChargingStationManager {
 	private volatile energyManager energyManager;
 	private weatherCondition weathercondition;
 	private Date date;
+	private String day;
 	private LogFileManager logFileManager;
 
 	private Logger LOGGER = Logger.getLogger("Logger_Station");
@@ -35,14 +36,15 @@ public class ChargingStationManager {
 		this.energySources = new ArrayList<>();
 		chargingLots = new ArrayList<>();
 		this.waitingList = new ArrayList<>();
-
+		this.day = day;
+		
 		for (int i = 0; i < numLots; i++) {
 			ChargingLot chargingLot = new ChargingLot(i + 1, day);
 			chargingLots.add(chargingLot);
 		}
 
 		this.energyManager = new energyManager(this.energySources);
-		this.weathercondition = new weatherCondition(energyManager);
+		this.weathercondition = new weatherCondition(energyManager,this.day);
 		this.logFileManager = new LogFileManager("res/logs/" + day + "/");
 	}
 

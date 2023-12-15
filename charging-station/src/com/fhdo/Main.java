@@ -28,7 +28,7 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		
-		ChargingStationManager chargingStationManager = new ChargingStationManager(3, "1");
+		ChargingStationManager chargingStationManager = new ChargingStationManager(3, "2");
 		LogFileManager logFileManager = new LogFileManager("res/logs/day_1/");
 		
 		// Create energy sources
