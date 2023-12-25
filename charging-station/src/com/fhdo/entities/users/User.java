@@ -7,15 +7,15 @@ public class User {
 	private String name;
 	private int id;
 	private String username; 
-	private String passwort; 
+	private String password; 
 	private String role; // "User", "Priority", "Admin"
 	
-	public User(String name, int id, String username, String passwort, String role) {
+	public User(String name, int id, String username, String password, String role) {
 		super();
 		this.name = name;
 		this.id = id;
 		this.username = username;
-		this.passwort = passwort;
+		this.password = password;
 		this.role = role;
 	}
 
@@ -43,12 +43,12 @@ public class User {
 		this.username = username;
 	}
 
-	public String getPasswort() {
-		return passwort;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setPasswort(String passwort) {
-		this.passwort = passwort;
+	public void setPassword(String passwort) {
+		this.password = passwort;
 	}
 
 	public String getRole() {
@@ -57,25 +57,6 @@ public class User {
 
 	public void setRole(String role) {
 		this.role = role;
-	}
-	
-	public void bookTimeSlot (ChargingStationManager ChargingStationManager) {
-		if (this.role == "Priority" || this.role == "Admin") {
-			System.out.println("Booking Time Slot");
-		}
-		else {
-			System.out.println("Not enough Authority");
-		}
-	}
-	
-	public void prioritzedQueue (ChargingStationManager ChargingStationManager) {
-		if (this.role == "Admin") {
-			System.out.println("Charging in Admin Slots");
-		}
-		else {
-			System.out.println("Not enough Authority");
-		}
-		
 	}
 	
 	public void changeRole (User user) {

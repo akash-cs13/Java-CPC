@@ -14,19 +14,25 @@ import java.util.logging.SimpleFormatter;
 import com.fhdo.entities.cars.Car;
 import com.fhdo.entities.cars.WaitingCar;
 import com.fhdo.entities.energy.energySources;
+import com.fhdo.entities.users.Booking;
+import com.fhdo.entities.users.Timeslot;
 import com.fhdo.entities.users.User;
 import com.fhdo.entities.weather.weatherType;
 
 public class ChargingStationManager {
 	private List<ChargingLot> chargingLots;
 	private List<WaitingCar> waitingList;
-	private volatile List<energySources> energySources; 
+	private List<Booking> bookings;
+
+	private volatile List<energySources> energySources;
 	private boolean isAssigned;
 	private volatile energyManager energyManager;
 	private weatherCondition weathercondition;
 	private Date date;
 	private String day;
 	private LogFileManager logFileManager;
+
+	private TimeManager timeManager;
 
 	private Logger LOGGER = Logger.getLogger("Logger_Station");
 	private FileHandler chargingStationFileHandler;
@@ -36,16 +42,19 @@ public class ChargingStationManager {
 		this.energySources = new ArrayList<>();
 		chargingLots = new ArrayList<>();
 		this.waitingList = new ArrayList<>();
+		this.bookings = new ArrayList<>();
 		this.day = day;
-		
+
 		for (int i = 0; i < numLots; i++) {
 			ChargingLot chargingLot = new ChargingLot(i + 1, day);
 			chargingLots.add(chargingLot);
 		}
 
 		this.energyManager = new energyManager(this.energySources);
-		this.weathercondition = new weatherCondition(energyManager,this.day);
+		this.weathercondition = new weatherCondition(energyManager, this.day);
 		this.logFileManager = new LogFileManager("res/logs/" + day + "/");
+		// Initialize the TimeManager
+		this.timeManager = new TimeManager();
 	}
 
 	public void handleWaitingList() {
@@ -57,7 +66,7 @@ public class ChargingStationManager {
 							WaitingCar waitingCarPop = waitingList.remove(0);
 							// chargingLot.chargeCar(waitingCarPop.getCar(),
 							// waitingCarPop.getenergySources());
-							chargingLot.chargeCar(waitingCarPop.getCar(), energyManager);
+							chargingLot.chargeCar(waitingCarPop.getCar(), energyManager, timeManager);
 							break;
 						}
 					}
@@ -73,13 +82,46 @@ public class ChargingStationManager {
 		thread.start();
 	}
 
+	public void bookTimeslot(User user, Car car, Timeslot timeslot) {
+
+		if (user.getRole() == "Priority" || user.getRole() == "Admin") {
+			System.out.println("Booking Time Slot");
+
+			Booking booking = new Booking(user, car, timeslot);
+
+			if (isTimeslotAvailable(timeslot)) {
+				bookings.add(booking);
+				System.out.println("Booking successful!");
+			} else {
+				System.out.println("The timeslot is already booked.");
+			}
+		} else {
+			System.out.println("Not enough Authority");
+		}
+	}
+
+	private boolean isTimeslotAvailable(Timeslot timeslot) {
+		for (Booking booking : bookings) {
+			// Check if the start time of the existing booking is before the end time of the given timeslot,
+			// and if the end time of the existing booking is after the start time of the given timeslot.
+			if (booking.getTimeslot().getStartTime().compareTo(timeslot.getEndTime()) < 0
+					&& booking.getTimeslot().getEndTime().compareTo(timeslot.getStartTime()) > 0) {
+				// Overlapping timeslot found, so it is not available
+				return false;
+			}
+		}
+
+		// No overlapping timeslot found, so it is available
+		return true;
+	}
+
 	public void addCarToChargingStation(Car car) {
 		isAssigned = false;
 
 		// Find the free charging lot
 		for (ChargingLot chargingLot : chargingLots) {
 			if (chargingLot.getisAvailable()) {
-				chargingLot.chargeCar(car, energyManager);
+				chargingLot.chargeCar(car, energyManager, timeManager);
 				this.isAssigned = true;
 				this.LOGGER.info("Car with ID: " + car.getId() + " charge in lot: " + chargingLot.getID());
 				break;
@@ -113,7 +155,6 @@ public class ChargingStationManager {
 		}
 	}
 
-	
 	public void getLogFileForUsersByLotID(User user, LogFileManager logFileManager, int lotID) {
 		List<String> matchingFilesByLotID;
 		matchingFilesByLotID = logFileManager.getLogFilesByEquipment(user, "ChargingLot_" + lotID);
@@ -132,11 +173,11 @@ public class ChargingStationManager {
 			System.out.println("Open the file in: " + matchingFile);
 		}
 	}
-	
+
 	public void weatherSimulation(weatherType weathertype) {
 		weathercondition.weatherSimulation(weathertype);
 	}
-	
+
 	public void addenergySources(energySources energySources) {
 		this.energySources.add(energySources);
 	}
@@ -147,7 +188,7 @@ public class ChargingStationManager {
 		});
 		handleTotalEnergyThread.start();
 	}
-	
+
 	public void InitLogger() {
 
 		try {
@@ -173,5 +214,5 @@ public class ChargingStationManager {
 		LOGGER.warning("This is a warning message");
 		LOGGER.severe("This is a severe error message");
 	}
-	
+
 }

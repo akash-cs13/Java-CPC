@@ -7,7 +7,6 @@ import com.fhdo.controller.CarReader;
 import com.fhdo.controller.ChargingStationManager;
 import com.fhdo.controller.LogFileManager;
 import com.fhdo.controller.UserManager;
-import com.fhdo.database.Database;
 import com.fhdo.entities.*;
 import com.fhdo.entities.cars.Car;
 import com.fhdo.entities.energy.GridElectricity;
@@ -45,20 +44,13 @@ public class Main {
 		chargingStationManager.weatherSimulation(weatherType.SUN);
 		chargingStationManager.handleTotalEnergy();
 		
-		
 		// Create cars
-		//CarReader reader = new CarReader();
-	    //List<Car> cars = reader.readFile("\\res\\input\\Cars.txt");
-		
-		//Create users and cars
-		Database db = new Database();
-		List<Object[]> usersAndCars = db.fetch(4);
-		//List<Object[]> usersAndCars = db.fetchRandomly(4); also can return the list shuffled
+		CarReader reader = new CarReader();
+	    List<Car> cars = reader.readFile("\\res\\input\\Cars.txt");
 		
 		// Charge cars at the charging station
-		for (Object[] car : usersAndCars) {
-			chargingStationManager.addCarToChargingStation((Car) car[1]);
-			//use (User) car[0] to get the user
+		for (Car car : cars) {
+			chargingStationManager.addCarToChargingStation(car);
 		}
 		
 		// Handle waiting list in a separate thread

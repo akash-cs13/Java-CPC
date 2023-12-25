@@ -50,7 +50,7 @@ public class ChargingLot {
 		return this.lotId;
 	}
 	
-	public void chargeCar(Car car, energyManager energyManager) {
+	public void chargeCar(Car car, energyManager energyManager, TimeManager timeManager) {
 		this.isAvailable = false;
 		Logger LOGGER = Logger.getLogger(ChargingLot.class.getName() + Integer.toString(lotId));
 		System.out.println("Car " + car.getBrand() + " assigned to Charging Lot " + lotId);
@@ -58,6 +58,9 @@ public class ChargingLot {
 
 		System.out.println("Charging Lot " + lotId + " started charging");
 		LOGGER.info("Charging Lot " + lotId + " started charging");
+		
+		// Record the start time of the charging process
+        Date startTime = timeManager.getCurrentTime();
 		
 		try {
 			int fileSizeLimit = 10 * 1024 * 1024; // 10 MB
@@ -95,6 +98,11 @@ public class ChargingLot {
 			this.isAvailable = true;
 			System.out.println("Charging Lot " + lotId + " finished charging for Car " + car.getBrand() + " with license: " + car.getId() + " in " + Double.toString(this.remainingChargeTime));
 			LOGGER.info("Charging Lot " + lotId + " finished charging for Car " + car.getBrand() + " with license: " + car.getId() + " in " + Double.toString(this.remainingChargeTime));
+			
+			// Calculate the charging duration for further implementation
+	        Date endTime = timeManager.getCurrentTime();
+	        long chargingDurationMillis = endTime.getTime() - startTime.getTime();
+	        long chargingDurationSeconds = chargingDurationMillis / 1000;
 		});
 		thread.start();
 	}
