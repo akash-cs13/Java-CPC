@@ -44,6 +44,7 @@ public class weatherCondition {
 	}
 
 	public void weatherSimulation(weatherType weather) {
+		setCurrentWeather(weather);
 		Thread weatherSimulatedThread = new Thread(() -> {
 			
 			// Simulate the weather condition

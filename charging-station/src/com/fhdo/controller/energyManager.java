@@ -21,7 +21,7 @@ public class energyManager {
 	private FileHandler chargingEnergyFileHandler;
 	private String logFolderPath = "logs/LogFileEnaergy/";
 
-	energyManager(List<energySources> energySources) {
+	public energyManager(List<energySources> energySources) {
 		this.energySources = energySources;
 	}
 
@@ -55,7 +55,6 @@ public class energyManager {
 			}
 		}
 	}
-
 	public void rechargeEnergy(energyType energytype) {
 		for (energySources energysource : this.energySources) {
 			if(energytype == energysource.getEnergyType()) {
@@ -63,5 +62,6 @@ public class energyManager {
 			}
 		}
 	}
+
 
 };
