@@ -23,5 +23,7 @@ public class UserManager {
 	public void removeUser(User user) {
 		this.userList.remove(user);
 	}
-
+	public  List<User> getUserList(){
+		return userList;
+	}
 }
