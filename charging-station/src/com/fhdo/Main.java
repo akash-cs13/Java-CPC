@@ -5,17 +5,7 @@ import java.util.List;
 import com.fhdo.controller.CarReader;
 import com.fhdo.controller.ChargingStation;
 import com.fhdo.controller.MultiExceptionHandling;
-import com.fhdo.controller.ProjectMetadata;
 import com.fhdo.model.*;
-import java.lang.annotation.*;
-
-
-@ProjectMetadata(
-	projectName = "Capstone Project Team 13",
-	version = "1.0",
-	description = "Project for Compact Java Course", 
-	developer = {"Nhat Quang Nguyen", "Nhat Lam Nguyen", "Hermann Anguiga", "Akash Cuntur Shrinivasmurthy"}
-)
 
 
 public class Main {
