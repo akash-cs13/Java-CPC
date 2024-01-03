@@ -1,6 +1,7 @@
 # Java Project for Compact Programming Course - Team 13 - Java-CPC
 
-Nhat Lam Nguyen | 7219037 
-Nhat Quang Nguyen | 7219288
-Akash Cuntur Shrinivasmurthy | 721964 
-Anguiga Hermann | 7218003
+# Home Task 4 Description:
+
+| Task | Assignee | Matrikel-Nr  |
+| -------- | -------- | -------- |
+Give user the possibility to open the requested log file based on the name of the equipment or date	 | Nhat Lam Nguyen | 7219037 |
