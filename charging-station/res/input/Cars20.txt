@@ -1,0 +1,20 @@
+Tesla S-60.0-DAX033
+Nissan Leaf-45.0-DAG034
+Toyota-25.0-DA035
+BMWi3-50.0-BMW001
+AudiE Tron-55.0-AUD001
+ChevyBolt-30.0-CHE001
+Kia Soul EV-40.0-KIA001
+Jaguar IPace-60.0-JAG001
+TeslaModel 3-55.0-DAX034
+Volkswagen-45.0-VW001
+Porsche Taycan-65.0-POR001
+Rivian R1 T-70.0-RIV001
+Tesla Model Y-50.0-DAX035
+Hyundai Kona EV-35.0-HYN001
+Mini Electric-25.0-MIN001
+Fiat 500e-20.0-FIA001
+Nissan Ariya-55.0-DAG035
+Mercedes EQC-60.0-MER001
+Audi Q4 eTron-45.0-AUD002
+Kia EV6-50.0-KIA002

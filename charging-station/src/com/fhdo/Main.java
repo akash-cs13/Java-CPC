@@ -1,39 +1,68 @@
 package com.fhdo;
 
+import java.text.SimpleDateFormat;
+import java.util.List;
+
+import com.fhdo.controller.CarReader;
 import com.fhdo.controller.ChargingStationManager;
+import com.fhdo.controller.LogFileManager;
+import com.fhdo.controller.UserManager;
 import com.fhdo.entities.*;
+import com.fhdo.entities.cars.Car;
+import com.fhdo.entities.energy.GridElectricity;
+import com.fhdo.entities.energy.SolarPanel;
+import com.fhdo.entities.energy.WindTurbine;
+import com.fhdo.entities.energy.energySources;
+import com.fhdo.entities.users.User;
+import com.fhdo.entities.weather.weatherType;
+import com.fhdo.metadata.ProjectMetadata;
+
+@ProjectMetadata(
+	projectName = "Capstone Project Team 13",
+	version = "4.0",
+	description = "Project for Compact Java Course", 
+	developer = {"Nhat Quang Nguyen", "Nhat Lam Nguyen", "Hermann Anguiga", "Akash Cuntur Shrinivasmurthy"}
+)
 
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-
-		ChargingStationManager chargingStationManager = new ChargingStationManager(3);
 		
+		ChargingStationManager chargingStationManager = new ChargingStationManager(3, "2");
+		LogFileManager logFileManager = new LogFileManager("res/logs/day_1/");
 		
 		// Create energy sources
-		EnergySource solarPanel = new SolarPanel(250.0);
-		EnergySource windTurbine = new WindTurbine(200.0);
-		EnergySource gridElectricity = new GridElectricity();
+		energySources solarPanel = new SolarPanel(250.0);
+		energySources windTurbine = new WindTurbine(200.0);
+		energySources gridElectricity = new GridElectricity(800.0);
 
 		// Add energy sources to the charging station
-		chargingStationManager.addEnergySource(solarPanel);
-		chargingStationManager.addEnergySource(windTurbine);
-		chargingStationManager.addEnergySource(gridElectricity);
+		chargingStationManager.addenergySources(solarPanel);
+		chargingStationManager.addenergySources(windTurbine);
+		chargingStationManager.addenergySources(gridElectricity);
 
+		chargingStationManager.weatherSimulation(weatherType.SUN);
+		chargingStationManager.handleTotalEnergy();
+		
 		// Create cars
-		Car car1 = new Car("Tesla", 300.0, 2);
-		Car car2 = new Car("Nissan Leaf", 250.0, 2);
-		Car car3 = new Car("Toyota1", 450.0, 6);
-		Car car4 = new Car("Toyota2", 500.0, 7);
+		CarReader reader = new CarReader();
+	    List<Car> cars = reader.readFile("\\res\\input\\Cars.txt");
 		
 		// Charge cars at the charging station
-		chargingStationManager.addCarToChargingStation(car1);	
-		chargingStationManager.addCarToChargingStation(car2);
-		chargingStationManager.addCarToChargingStation(car3);
-		chargingStationManager.addCarToChargingStation(car4);
+		for (Car car : cars) {
+			chargingStationManager.addCarToChargingStation(car);
+		}
 		
 		// Handle waiting list in a separate thread
 		chargingStationManager.handleWaitingList();
-
+		
+		
+		// User Management - Will be integrated when implement the capstone project
+		User user1 = new User("name", 123, "username", "123a", "Admin");
+		UserManager user = new UserManager();
+		user.addUser(user1);
+		
+		chargingStationManager.getLogFileForUsersByDate(user1, logFileManager, 1);
+		chargingStationManager.getLogFileForUsersByLotID(user1, logFileManager, 2);
 	}
 }
