@@ -25,9 +25,9 @@ public class ChargingStation {
 	    	e.initCause(new IOException ("IO cause"));
 	    	throw e;
 	    	
-	       /* if (energySource.getAvailableEnergy() < car.getBatteryCapacity()) {
+	        if (energySource.getAvailableEnergy() < car.getBatteryCapacity()) {
 	            throw new UnvailableEnergySourceException("The available source of energy is not enough for charging", null);
-	        } */
+	        }
 	        
 	    } catch (UnvailableEnergySourceException e) {
 	        System.out.println("Caught:  " + e);
