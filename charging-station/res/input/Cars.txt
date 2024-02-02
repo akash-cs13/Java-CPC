@@ -2,3 +2,6 @@ TeslaS-30.0-DAX195
 Nissan Leaf-25.0-DAG206
 Toyota1-20.0-DA0908
 Toyota2-30.0-DA3322
+Kia Soul EV-40.0-KIA001
+Jaguar IPace-60.0-JAG001
+TeslaModel 3-55.0-DAX034

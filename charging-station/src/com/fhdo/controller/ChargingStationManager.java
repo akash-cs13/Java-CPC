@@ -23,6 +23,7 @@ public class ChargingStationManager {
 	private List<ChargingLot> chargingLots;
 	private List<WaitingCar> waitingList;
 	private List<Booking> bookings;
+	private String id;
 
 	private volatile List<energySources> energySources;
 	private boolean isAssigned;
@@ -38,15 +39,16 @@ public class ChargingStationManager {
 	private FileHandler chargingStationFileHandler;
 	private String logFolderPath = "logs/LogFileStation/";
 
-	public ChargingStationManager(int numLots, String day) {
+	public ChargingStationManager(String id, int numLots, String day) {
 		this.energySources = new ArrayList<>();
 		chargingLots = new ArrayList<>();
 		this.waitingList = new ArrayList<>();
 		this.bookings = new ArrayList<>();
 		this.day = day;
+		this.id = id;
 
 		for (int i = 0; i < numLots; i++) {
-			ChargingLot chargingLot = new ChargingLot(i + 1, day);
+			ChargingLot chargingLot = new ChargingLot(i + 1, day, id);
 			chargingLots.add(chargingLot);
 		}
 
@@ -115,7 +117,7 @@ public class ChargingStationManager {
 		return true;
 	}
 
-	public void addCarToChargingStation(Car car) {
+	public boolean addCarToChargingStation(Car car) {
 		isAssigned = false;
 
 		// Find the free charging lot
@@ -123,7 +125,7 @@ public class ChargingStationManager {
 			if (chargingLot.getisAvailable()) {
 				chargingLot.chargeCar(car, energyManager, timeManager);
 				this.isAssigned = true;
-				this.LOGGER.info("Car with ID: " + car.getId() + " charge in lot: " + chargingLot.getID());
+				//this.LOGGER.info("Car with ID: " + car.getId() + " charge in lot: " + chargingLot.getID());
 				break;
 			}
 		}
@@ -148,11 +150,13 @@ public class ChargingStationManager {
 			}
 		}
 		if (!isAssigned) {
-			// TBD -> will be implemented when we use multiple stations
+			// implemented, but janky
+			
 			System.out.println("Car " + car.getBrand() + " with ID: " + car.getId() + " need to go another station.");
 			this.LOGGER.info("Car " + car.getBrand() + " with ID: " + car.getId() + " need to go another station.");
-
+			return false;
 		}
+		return true;
 	}
 
 	public void getLogFileForUsersByLotID(User user, LogFileManager logFileManager, int lotID) {
@@ -210,9 +214,9 @@ public class ChargingStationManager {
 			this.LOGGER.log(Level.WARNING, "Exception::", e);
 		}
 
-		LOGGER.info("This is an informational message");
-		LOGGER.warning("This is a warning message");
-		LOGGER.severe("This is a severe error message");
+		//LOGGER.info("This is an informational message");
+		//LOGGER.warning("This is a warning message");
+		//LOGGER.severe("This is a severe error message");
 	}
 
 }

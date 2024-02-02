@@ -21,14 +21,16 @@ public class ChargingLot {
 	private double remainingChargeTime;
 	private String logFolderPath;
 	private String day;
+	private String stationId;
 	
 	
-	public ChargingLot(int lotId, String day) {
+	public ChargingLot(int lotId, String day, String stationId) {
 		this.lotId = lotId;
 		this.isAvailable = true;
 		this.remainingChargeTime = 0;
 		this.day = day;
-		this.logFolderPath = "res/logs/day_"+day+"/";
+		this.stationId = stationId;
+		this.logFolderPath = "res/logs/day_"+day+"/Station_"+stationId+"/";
 		createDirectory(this.logFolderPath);
 
 	}
@@ -53,11 +55,11 @@ public class ChargingLot {
 	public void chargeCar(Car car, energyManager energyManager, TimeManager timeManager) {
 		this.isAvailable = false;
 		Logger LOGGER = Logger.getLogger(ChargingLot.class.getName() + Integer.toString(lotId));
-		System.out.println("Car " + car.getBrand() + " assigned to Charging Lot " + lotId);
-		LOGGER.info("Car " + car.getBrand() + " assigned to Charging Lot " + lotId);
+		System.out.println("Car " + car.getBrand() + " with license "+car.getId()+" assigned to Charging Station "+this.stationId+" Charging Lot " + lotId);
+		LOGGER.info("Car " + car.getBrand() + " with license "+car.getId()+"  assigned to  Charging Station "+this.stationId+" Charging Lot " + lotId);
 
-		System.out.println("Charging Lot " + lotId + " started charging");
-		LOGGER.info("Charging Lot " + lotId + " started charging");
+		System.out.println("Charging Station "+this.stationId+" Charging Lot " + lotId + " started charging Car "+car.getBrand()+" with license "+car.getId());
+		LOGGER.info("Charging Station "+this.stationId+" Charging Lot " + lotId + " started charging Car "+car.getBrand()+" with license "+car.getId());
 		
 		// Record the start time of the charging process
         Date startTime = timeManager.getCurrentTime();
@@ -65,7 +67,7 @@ public class ChargingLot {
 		try {
 			int fileSizeLimit = 10 * 1024 * 1024; // 10 MB
 			int fileCount = 5;	
-			FileHandler chargingLotFileHandler = new FileHandler(logFolderPath + "Day_" + day + "ChargingLot_" + Integer.toString(this.lotId)+".log", fileSizeLimit, fileCount, true);
+			FileHandler chargingLotFileHandler = new FileHandler(logFolderPath + "Day_" + day +"ChargingLot_" + Integer.toString(this.lotId)+".log", fileSizeLimit, fileCount, true);
 			LOGGER.addHandler(chargingLotFileHandler);
 			chargingLotFileHandler.setFormatter(new SimpleFormatter());
 		} catch (IOException e) {
@@ -73,6 +75,7 @@ public class ChargingLot {
 		}
 		
 		Thread thread = new Thread(() -> {
+			try {
 			while (car.getbatteryFullCapacity() - car.getBatteryCurrentCapacity() > 0) {
 					if (energyManager.getTotalEnergy() > 0) {
 						this.remainingChargeTime = car.getbatteryFullCapacity() - car.getBatteryCurrentCapacity();
@@ -82,11 +85,12 @@ public class ChargingLot {
 						try {
 						TimeUnit.SECONDS.sleep(1); // Suppose 10 unit of energy needs 1 second to charge
 						} catch (InterruptedException e) {
-							e.printStackTrace();
-							LOGGER.warning(e.getMessage());
+							Thread.currentThread().interrupt(); // Restore the interrupted status
+	                        LOGGER.warning("Charging interrupted: " + e.getMessage());
+	                        break;
 						}
-						System.out.println("Charging Lot " + lotId + " will be fininished in " + this.remainingChargeTime + " seconds");
-							LOGGER.info("Charging Lot " + lotId + " will be fininished in " + this.remainingChargeTime + " seconds");
+						System.out.println("Charging Station "+this.stationId+" Charging Lot " + lotId + " will be fininished charging car "+car.getBrand()+" with licence: "+car.getId()+" in " + this.remainingChargeTime + " seconds");
+							LOGGER.info("Charging Station "+this.stationId+" Charging Lot " + lotId + " will be fininished charging car "+car.getBrand()+" with licence: "+car.getId()+" in " + this.remainingChargeTime + " seconds");
 						
 						
 					} else
@@ -95,9 +99,14 @@ public class ChargingLot {
 						throw new InsufficientEnergyException();
 					}				
 			}
+			}
+			catch (InsufficientEnergyException e){
+				LOGGER.warning("Insufficient energy exception for car "+car.getBrand()+" with licence " + car.getId() + ", ErrorMessage: " + e.getMessage());
+				e.printStackTrace();
+			}
 			this.isAvailable = true;
-			System.out.println("Charging Lot " + lotId + " finished charging for Car " + car.getBrand() + " with license: " + car.getId() + " in " + Double.toString(this.remainingChargeTime));
-			LOGGER.info("Charging Lot " + lotId + " finished charging for Car " + car.getBrand() + " with license: " + car.getId() + " in " + Double.toString(this.remainingChargeTime));
+			System.out.println("Charging Station "+this.stationId+" Charging Lot " + lotId + " finished charging for Car " + car.getBrand() + " with license: " + car.getId() + " in " + Double.toString(this.remainingChargeTime)+ " seconds");
+			LOGGER.info("Charging Station "+this.stationId+" Charging Lot " + lotId + " finished charging for Car " + car.getBrand() + " with license: " + car.getId() + " in " + Double.toString(this.remainingChargeTime)+ " seconds");
 			
 			// Calculate the charging duration for further implementation
 	        Date endTime = timeManager.getCurrentTime();
