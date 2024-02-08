@@ -55,6 +55,7 @@ public class ChargingLot {
 	public void chargeCar(Car car, energyManager energyManager, TimeManager timeManager) {
 		this.isAvailable = false;
 		Logger LOGGER = Logger.getLogger(ChargingLot.class.getName() + Integer.toString(lotId));
+		LOGGER.setUseParentHandlers(false);
 		System.out.println("Car " + car.getBrand() + " with license "+car.getId()+" assigned to Charging Station "+this.stationId+" Charging Lot " + lotId);
 		LOGGER.info("Car " + car.getBrand() + " with license "+car.getId()+"  assigned to  Charging Station "+this.stationId+" Charging Lot " + lotId);
 

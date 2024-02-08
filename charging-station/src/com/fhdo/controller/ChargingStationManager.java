@@ -57,6 +57,7 @@ public class ChargingStationManager {
 		this.logFileManager = new LogFileManager("res/logs/" + day + "/");
 		// Initialize the TimeManager
 		this.timeManager = new TimeManager();
+		this.LOGGER.setUseParentHandlers(false);
 	}
 
 	public void handleWaitingList() {

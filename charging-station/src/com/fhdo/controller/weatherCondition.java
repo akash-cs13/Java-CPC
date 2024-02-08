@@ -45,6 +45,7 @@ public class weatherCondition {
 
 	public void weatherSimulation(weatherType weather) {
 		setCurrentWeather(weather);
+		this.logger.setUseParentHandlers(false);
 		Thread weatherSimulatedThread = new Thread(() -> {
 			
 			// Simulate the weather condition
