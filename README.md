@@ -1,7 +1,8 @@
 # Java Project for Compact Programming Course - Team 13 - Java-CPC
 # Capstone Project
 ## Video Link
-https://youtu.be/PvfzIfv5RRU
+Running Application Demonstration Video: https://youtu.be/q6R-2p8Us9A
+Explaination Video: https://youtu.be/PvfzIfv5RRU
 
 ## Authors
 | Name | Matrikel-Nr |
