@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fhdo.model.Car;
+import com.fhdo.entities.cars.Car;;
 
 //Resource Management
 public class CarReader {
@@ -23,7 +23,7 @@ public class CarReader {
 			String line;
 			while((line = br.readLine()) != null) {
 				String[] words = line.split("-");
-				Car car = new Car(words[0],Double.parseDouble(words[1]));
+				Car car = new Car(words[0],Double.parseDouble(words[1]),words[2]);
 				cars.add(car);
 			}
 			

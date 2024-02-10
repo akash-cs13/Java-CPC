@@ -1,0 +1,12 @@
+Dec 15, 2023 7:54:38 PM com.fhdo.controller.ChargingLot lambda$0
+INFO: Charging Lot 2 will be fininished in 15.0 seconds
+Dec 15, 2023 7:54:39 PM com.fhdo.controller.ChargingLot lambda$0
+INFO: Charging Lot 2 will be fininished in 5.0 seconds
+Dec 15, 2023 7:54:39 PM com.fhdo.controller.ChargingLot lambda$0
+INFO: Charging Lot 2 finished charging for Car Nissan Leaf with license: DAG206 in 5.0
+Dec 15, 2023 8:20:16 PM com.fhdo.controller.ChargingLot lambda$0
+INFO: Charging Lot 2 will be fininished in 15.0 seconds
+Dec 15, 2023 8:20:17 PM com.fhdo.controller.ChargingLot lambda$0
+INFO: Charging Lot 2 will be fininished in 5.0 seconds
+Dec 15, 2023 8:20:17 PM com.fhdo.controller.ChargingLot lambda$0
+INFO: Charging Lot 2 finished charging for Car Nissan Leaf with license: DAG206 in 5.0
