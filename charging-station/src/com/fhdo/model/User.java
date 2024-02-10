@@ -1,6 +1,6 @@
 package com.fhdo.model;
 
-import com.fhdo.controller.ChargingStation;
+import com.fhdo.controller.ChargingStationManager;
 
 public class User {
 	private String name;
@@ -58,7 +58,7 @@ public class User {
 		this.role = role;
 	}
 	
-	public void bookTimeSlot (ChargingStation chargingStation) {
+	public void bookTimeSlot (ChargingStationManager chargingStation) {
 		if (this.role == "Priority" || this.role == "Admin") {
 			System.out.println("Booking Time Slot");
 		}
@@ -67,7 +67,7 @@ public class User {
 		}
 	}
 	
-	public void prioritzedQueue (ChargingStation chargingStation) {
+	public void prioritzedQueue (ChargingStationManager chargingStation) {
 		if (this.role == "Admin") {
 			System.out.println("Charging in Admin Slots");
 		}

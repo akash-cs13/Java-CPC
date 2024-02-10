@@ -1,4 +1,4 @@
-package log2;
+package com.fhdo.controller;
 
 import java.io.File;
 import java.io.FileWriter;
