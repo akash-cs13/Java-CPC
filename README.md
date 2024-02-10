@@ -2,7 +2,7 @@
 
 # Home Task 4:
 
-UPDATE: Merger the hometask5 as this issue waas already fixed.
+UPDATE: merged the code from hometask5 as this issue was already fixed.
 
 | Task                                                                                                       | Assignee                                           | Matrikel-Nr       |
 | ---------------------------------------------------------------------------------------------------------- | -------------------------------------------------- | ----------------- |
